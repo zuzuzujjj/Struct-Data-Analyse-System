@@ -1,18 +1,23 @@
 <template>
-  <div>
-    app
-    <p>
-      111
-    </p>
-  </div>
+  <router-view></router-view>
 </template>
+ 
+ 
+<script lang='ts' setup>
+</script>
+ 
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
-<style lang="less">
-div{
-  font-size: 12px;
-  p{
-    font-size: 20px;
-    font-weight: bold;
-  }
+body,
+html {
+  width: 100%;
+  height: 100%;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-size: 14px;
 }
 </style>
