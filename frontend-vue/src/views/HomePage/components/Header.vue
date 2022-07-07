@@ -3,7 +3,7 @@
     <div class="top-container">
       <div class="top-left-container">
         <a href="">
-          <img src="../image/logo2.png" alt="logo">
+          <img src="../image/logo.png" alt="logo">
         </a>
         <span>
         </span>
@@ -12,16 +12,26 @@
         </h2>
       </div>
       <nav class="top-nav-container">
+        <ul class="menus">
+          <li><span>文档</span></li>
+          <li><span>数据知识图谱</span></li>
+          <li><span>数据分析</span></li>
+          <li><span>其他</span></li>
+        </ul>
         <div class="search">
           <el-input placeholder="Type something" :prefix-icon="Search" />
         </div>
-        <ul class="menus">
-          <li>文档</li>
-          <li>结构化数据</li>
-          <li>数据分析</li>
-          <li>其他</li>
-        </ul>
       </nav>
+      <div class="top-right-container">
+        <a href="https://github.com/suanzi-yi/Struct-Data-Analyse-System.git" target="_blank">
+          <svg t="1657152865382" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3109" width="30" height="30">
+            <path
+              d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9 23.5 23.2 38.1 55.4 38.1 91v112.5c0.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z"
+              p-id="3110" fill="#fff"></path>
+          </svg>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -38,8 +48,7 @@ import { ref, reactive } from 'vue'
 <style scoped lang="less">
 .top-header {
   width: 100%;
-  background-color: #fff;
-  border-bottom:1px solid rgba(0, 0, 0, 0.3);
+  background-color: #1C1C1C;
 }
 
 .top-container {
@@ -49,7 +58,9 @@ import { ref, reactive } from 'vue'
   justify-content: space-between;
   line-height: 64px;
   margin: 0 40px;
-
+  color: #fff;
+  font-size: 18px;
+//左侧容器
   .top-left-container {
     height: 100%;
     line-height: 64px;
@@ -66,7 +77,7 @@ import { ref, reactive } from 'vue'
 
     &>span {
       margin: 0 20px;
-      background-color: #ccc;
+      background-color: #fff;
       width: 1px;
       height: 24px;
       display: inline-block;
@@ -79,14 +90,13 @@ import { ref, reactive } from 'vue'
       white-space: nowrap;
     }
   }
-
+//导航栏容器
   .top-nav-container {
     display: flex;
     align-items: center;
 
     .search {
       margin-right: 28px;
-
     }
 
     .menus {
@@ -97,14 +107,45 @@ import { ref, reactive } from 'vue'
       li {
         display: block;
         margin-right: 28px;
-        color: #697b8c;
+        position: relative;
 
-        &:hover {
-          color: #9f5fdb;
+        span {
+          display: block;
 
+          &:hover::after {
+            background-color: #fff;
+            content: "";
+            display: block;
+            height: 2px;
+            position: absolute;
+            bottom: 20%;
+            width: 100%;
+          }
         }
       }
     }
+  }
+
+  .top-right-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      display: block;
+      height: 100%;
+
+      .icon {
+        vertical-align: middle;
+
+        &:hover {
+          path {
+            fill: #f3ecf9;
+          }
+        }
+      }
+    }
+
   }
 }
 </style>
