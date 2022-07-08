@@ -1,9 +1,11 @@
 <template>
-    <!-- 头部组件 -->
-    <Header></Header>
-    <!-- 中间 -->
-    <Main></Main>
-    
+    <div class="container">
+        <!-- 头部组件 -->
+        <Header></Header>
+        <!-- 中间 -->
+        <Main></Main>
+        <!-- footer -->
+    </div>
 </template>
  
  
@@ -12,5 +14,10 @@ import Header from './components/Header.vue'
 import Main from './components/Main.vue'
 </script>
  
-<style scoped>
+<style scoped lang='less'>
+.container {
+    background-image: url('./image/longbg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 </style>

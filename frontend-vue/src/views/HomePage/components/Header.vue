@@ -53,7 +53,7 @@ console.log(currentPath);
 
 .top-header {
   width: 100%;
-  background-color: #fff;
+  height: 100%;
 }
 
 .top-container {
@@ -106,12 +106,14 @@ console.log(currentPath);
 
     .search {
       margin-right: 50px;
+
       .el-input {
-        &:hover{
-          border:1px solid @menusColor;
+        &:hover {
+          border: 1px solid @menusColor;
         }
+
         & .is-focus {
-           border:1px solid @menusColor;
+          border: 1px solid @menusColor;
         }
       }
     }
@@ -167,6 +169,7 @@ console.log(currentPath);
         position: relative;
         top: -0.15em;
         fill: #697b8c;
+
         &:hover {
           path {
             fill: @menusColor;

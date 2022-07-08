@@ -18,12 +18,7 @@
             <el-button round><span>快速开始</span></el-button>
             <el-button color="#fff" round><span>概览</span></el-button>
           </div>
-
         </div>
-        <!-- 注意事项 -->
-        <!-- <div class="content-notifications">
-          111
-        </div> -->
         <!-- 右侧图 -->
         <div class="content-right">
           <div class="title-warpper">
@@ -48,12 +43,13 @@
 
           <div class="imag-warpper">
             <!-- 1==>结构化数据 -->
-            <div :class="['img-container', isActivePicture == 1 ? 'isActivePicture' : '']" @mouseover="hoverPicture(1)" @mouseleave="overPicture">
+            <div :class="['img-container', isActivePicture == 1 ? 'isActivePicture' : '']" @mouseover="hoverPicture(1)"
+              @mouseleave="overPicture">
               <img src="../image/p1.png" alt="">
             </div>
             <!-- 0==>非结构化数据 -->
-            <div :class="['img-container', isActivePicture == 0 ? 'isActivePicture' : '']"
-              @mouseover="hoverPicture(0)" @mouseleave="overPicture">
+            <div :class="['img-container', isActivePicture == 0 ? 'isActivePicture' : '']" @mouseover="hoverPicture(0)"
+              @mouseleave="overPicture">
               <img src="../image/p2.png" alt="">
             </div>
           </div>
@@ -62,8 +58,8 @@
       </div>
     </section>
     <!-- 第二部分 -->
-    <div>
-      111
+    <div  class="ability-warpper" >
+      
     </div>
     <!-- 第三部分 -->
   </main>
@@ -71,10 +67,13 @@
  
  
 <script lang='ts' setup>
-import { ref, reactive, onMounted,onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
+//第一部分轮播图
 let isActivePicture = ref<number>(0)
-const state = reactive<{ timeInter: string }>({
-  timeInter: ''
+const state = reactive<{ timeInter: string, timeActive: number }>({
+  timeInter: '',  //定时器ID
+  timeActive:5000 //时间间隔
+
 })
 
 onMounted(() => {
@@ -84,10 +83,10 @@ onMounted(() => {
     } else {
       isActivePicture.value = 0
     }
-  }, 3000), 3000)
+  }, state.timeActive),  state.timeActive)
 
 })
-onUnmounted(()=>{ 
+onUnmounted(() => {
   clearInterval(state.timeInter)
 })
 const hoverPicture = (value: number) => {
@@ -101,17 +100,13 @@ const overPicture = () => {
     } else {
       isActivePicture.value = 0
     }
-  }, 3000), 3000)
+  },  state.timeActive),  state.timeActive)
 }
 </script>
  
 <style scoped lang="less">
 .content-warpper {
-  background-image: url(https://img.alicdn.com/imgextra/i3/O1CN01t4F2fl1efn0b0K7VB_!!6000000003899-2-tps-4320-1590.png);
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 94vh;
+  height: 100vh;
   max-height: 803px;
   min-height: 650px;
   overflow: hidden;
@@ -231,7 +226,7 @@ const overPicture = () => {
     // bottom: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    // align-items: center;
     height: 100%;
     width: 700px;
     margin-right: 4.5%;
@@ -250,7 +245,7 @@ const overPicture = () => {
         img {
           display: block;
           margin-right: 10px;
-          height: 100%;
+          height: 75%;
         }
 
         // 标题文字
