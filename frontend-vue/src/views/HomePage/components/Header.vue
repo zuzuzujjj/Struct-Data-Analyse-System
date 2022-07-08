@@ -64,7 +64,7 @@ console.log(currentPath);
   line-height: 64px;
   margin: 0 40px;
   color: #697b8c;
-  font-size: 18px;
+  // font-size: 18px;
 
   //左侧容器
   .top-left-container {
@@ -84,7 +84,7 @@ console.log(currentPath);
     &>span {
       margin: 0 20px;
       background-color: @menusColor;
-      width: px;
+      width: 2px;
       height: 24px;
       display: inline-block;
       vertical-align: middle;
@@ -102,7 +102,6 @@ console.log(currentPath);
   .top-nav-container {
     display: flex;
     align-items: center;
-    margin-left: 20%;
 
     .search {
       margin-right: 50px;
@@ -129,6 +128,7 @@ console.log(currentPath);
       }
 
       li {
+        font-size: 18px;
         display: block;
         margin-right: 28px;
         position: relative;
@@ -140,7 +140,6 @@ console.log(currentPath);
 
         span {
           display: block;
-
           &:hover::after {
             background-color: @menusColor;
             content: "";
