@@ -16,7 +16,7 @@
 body,
 html {
   width: 100%;
-  /* height: 150%; */
+  height: 100%;
   font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
 </style>

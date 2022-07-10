@@ -3,7 +3,7 @@
     <div class="top-container">
       <div class="top-left-container">
         <a href="">
-          <img src="../image/logo2.png" alt="logo">
+          <img src="../../assets/logo/logo2.png" alt="logo">
         </a>
         <span>
         </span>
@@ -16,10 +16,10 @@
           <el-input placeholder="Type something" :prefix-icon="Search" />
         </div>
         <ul class="menus">
-          <li :class="currentPath === '/' ? 'isCurrent' : ''"><span>首页</span></li>
-          <li :class="currentPath === '/1' ? 'isCurrent' : ''"><span>数据知识图谱</span></li>
-          <li :class="currentPath === '/2' ? 'isCurrent' : ''"><span>数据分析</span></li>
-          <li :class="currentPath === '/3' ? 'isCurrent' : ''"><span>文档</span></li>
+          <li :class="currentPath === '/' ? 'isCurrent' : ''" @click="navigate.push('/')"><span>首页</span></li>
+          <li :class="currentPath === '/struct-data' ? 'isCurrent' : ''" @click="navigate.push('/struct-data')"><span>数据知识图谱</span></li>
+          <li :class="currentPath === '/data-analysis' ? 'isCurrent' : ''" @click="navigate.push('/data-analysis')"><span>数据分析</span></li>
+          <li :class="currentPath === '/document' ? 'isCurrent' : ''" @click="navigate.push('document')"><span>文档</span></li>
           <li class="top-right-container">
             <a href="https://github.com/suanzi-yi/Struct-Data-Analyse-System.git" target="_blank">
               <svg t="1657152865382" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -42,7 +42,9 @@
 import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from 'vue'
-const currentPath: string = useRoute().path
+const navigate=useRouter()
+const router = useRoute()
+const currentPath: string =router.path
 console.log(currentPath);
 
 

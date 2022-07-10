@@ -6,7 +6,7 @@
         <!-- 文档 -->
         <div class="content-text">
           <div class="text-title">
-            <img src="../image/logo2.png" alt="">
+            <img src="../../../assets/logo/logo2.png" alt="">
             <div class="label">
               知识图谱
             </div>
@@ -15,8 +15,8 @@
             结构化数据查询与可视化解决方案
           </p>
           <div class="text-buttons">
-            <el-button round><span>快速开始</span></el-button>
-            <el-button color="#fff" round><span>概览</span></el-button>
+            <el-button round @click="navigate.push('/struct-data')"><span>快速开始</span></el-button>
+            <el-button color="#fff" round @click="navigate.push('/document')"><span>概览</span></el-button>
           </div>
         </div>
         <!-- 右侧图 -->
@@ -81,7 +81,7 @@
               <path
                 d="M379.353 805.804H243.008c-18.832 0-34.091-15.278-34.091-34.128V580.704c0-18.831 15.259-34.126 34.091-34.126h136.345c18.851 0 34.109 15.295 34.109 34.126v190.972c0 18.849-15.258 34.128-34.109 34.128m-102.217-68.219h68.09V614.813h-68.09v122.772zM906.177 805.804H769.813c-18.85 0-34.128-15.278-34.128-34.128v-657.05c0-18.832 15.278-34.109 34.128-34.109h136.363c18.831 0 34.108 15.277 34.108 34.109v657.05c0.001 18.849-15.276 34.128-34.107 34.128m-102.273-68.219h68.146v-588.85h-68.146v588.85zM642.738 805.804H506.411c-18.849 0-34.109-15.278-34.109-34.128V343.534c0-18.85 15.26-34.109 34.109-34.109h136.327c18.85 0 34.126 15.26 34.126 34.109v428.142c0 18.849-15.276 34.128-34.126 34.128m-102.236-68.219h68.126V377.644h-68.126v359.941z"
                 fill="#515151" p-id="2352"></path>
-            </svg>能非结构化数据分析</span></li>
+            </svg>非结构化数据分析</span></li>
         <li :class="isActiveAbility == 2 ? 'isActiveAbility' : ''" @click="isActiveAbility = 2"><span><svg
               t="1657283655197" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
               p-id="5352">
@@ -91,21 +91,77 @@
             </svg>数据可视化与机器学习</span></li>
       </ul>
       <!-- 分隔线 -->
-      <hr>
+      <span class="spread"></span>
       <!-- 内容展示部分 -->
       <div class="ability-show-warpper">
-        <div v-show="isActiveAbility==0" class="ability-show-item">111</div>
-        <div v-show="isActiveAbility==1" class="ability-show-item">www</div>
-        <div v-show="isActiveAbility==2" class="ability-show-item">sss</div>
+        <div v-if="isActiveAbility == 0" class="ability-show-item">
+          <!-- 左边表述 -->
+          <div class="left-description">
+            <svg t="1657346044068" class="icon-ablity" viewBox="0 0 1024 1024" version="1.1"
+              xmlns="http://www.w3.org/2000/svg" p-id="8673">
+              <path
+                d="M0 304.64l292.571429 175.542857v157.257143l146.285714 62.610286v292.571428L0 804.571429V304.64z m1024 0V804.571429l-438.857143 188.050285v-292.571428l146.285714-62.683429v-157.257143l292.571429-175.469714zM512 0l428.982857 183.881143-284.379428 170.642286L512 292.571429l-144.603429 61.952-284.525714-170.642286L512 0z"
+                p-id="8674" fill="#8744E1"></path>
+            </svg>
+            <h3><span>结构化数据知识图谱<span></span></span></h3>
+            <p>快速查询数据、知识图谱可视化、多维度分析与比较、数据关系简单明了</p>
+            <router-link to="" target="">查看详情</router-link>
+          </div>
+          <!-- 右边图片 -->
+          <div class="right-image">
+            <img src="../image/ability/test1.png" alt="">
+          </div>
+        </div>
+        <div v-if="isActiveAbility == 1" class="ability-show-item">
+          <!-- 左边表述 -->
+          <div class="left-description">
+            <svg t="1657363558289" class="icon-ablity" viewBox="0 0 1024 1024" version="1.1"
+              xmlns="http://www.w3.org/2000/svg" p-id="5001">
+              <path
+                d="M864 518.016H505.984V160a8 8 0 0 0-8-8h-25.984a398.464 398.464 0 0 0-282.816 117.12 398.208 398.208 0 0 0-117.184 282.88 398.464 398.464 0 0 0 117.12 282.816 398.208 398.208 0 0 0 282.88 117.184 398.464 398.464 0 0 0 282.816-117.12 398.208 398.208 0 0 0 117.184-282.88v-25.984a8 8 0 0 0-8-8z m-158.272 269.76a331.584 331.584 0 0 1-235.328 96.256 329.856 329.856 0 0 1-233.216-97.28 329.856 329.856 0 0 1-97.152-234.752c0-88.704 34.496-172.16 97.152-234.816a329.088 329.088 0 0 1 200.832-95.488v364.288h364.288a329.344 329.344 0 0 1-96.64 201.792z m246.272-325.376l-2.56-28.16a397.824 397.824 0 0 0-115.2-244.672 399.36 399.36 0 0 0-245.248-114.944l-28.288-2.624a7.936 7.936 0 0 0-8.704 7.872V464c0 4.416 3.584 8 8 8l384-1.024a8 8 0 0 0 8-8.576z m-332.16-58.24V147.648c62.528 13.12 120.64 44.16 166.4 89.792a330.176 330.176 0 0 1 89.984 166.144l-256.448 0.64z"
+                fill="#8744E1" p-id="5002"></path>
+            </svg>
+            <h3><span>非结构结数据分析<span></span></span></h3>
+            <p>DataFrame数据操作与可视化、机器学习、数据分析,DataFrame数据操作与可视化、机器学习、数据分析,DataFrame数据操作与可视化、机器学习、数据分析</p>
+            <router-link to="/docment" target="">查看详情</router-link>
+          </div>
+          <!-- 右边图片 -->
+          <div class="right-image">
+            <img src="../image/ability/test1.png" alt="">
+          </div>
+        </div>
+        <div v-if="isActiveAbility == 2" class="ability-show-item">
+          <!-- 左边表述 -->
+          <div class="left-description">
+            <svg t="1657363772553" class="icon-ablity" viewBox="0 0 1024 1024" version="1.1"
+              xmlns="http://www.w3.org/2000/svg" p-id="7560">
+              <path
+                d="M532.992 498.176c31.232-10.752 52.224-40.448 52.224-73.728 0-6.144-0.512-11.776-2.048-17.408l195.584-124.416-245.76 424.96V498.176zM431.104 407.552c-1.024 5.632-2.048 11.264-2.048 17.408 0 33.28 20.992 62.464 52.224 73.728v227.84L219.136 272.384l211.968 135.168z m123.904-44.032c-13.824-10.752-30.72-16.896-48.128-16.896-18.432 0-34.816 6.144-48.128 16.896L252.928 231.936h508.416L555.008 363.52z m295.936-235.52c-33.28 0-62.464 20.992-73.728 52.224H237.056C225.792 148.992 196.608 128 163.328 128c-43.008 0-77.824 34.816-77.824 77.824 0 43.008 34.816 77.824 77.824 77.824h2.048l277.504 480.768c-9.216 13.312-14.336 29.184-14.336 45.056 0 43.008 34.816 77.824 77.824 77.824 43.008 0 77.824-34.816 77.824-77.824 0-19.968-8.192-38.912-20.48-52.224l273.92-474.624c3.584 1.024 8.192 1.024 12.288 1.024 43.008 0 77.824-34.816 77.824-77.824 0-42.496-33.792-77.824-76.8-77.824z"
+                fill="#8744E1" p-id="7561"></path>
+            </svg>
+
+            <h3><span>机器学习与数据分析<span></span></span></h3>
+            <p>一键机器学习、无需编写代码、快速验证数据集、线性回归</p>
+            <a href="#/document" target="">查看详情</a>
+          </div>
+          <!-- 右边图片 -->
+          <div class="right-image">
+            <img src="../image/ability/test1.png" alt="">
+          </div>
+        </div>
       </div>
     </div>
     <!-- 第三部分 -->
+    <div style="height:800px">
+      333</div>
   </main>
 </template>
  
  
 <script lang='ts' setup>
+import { useRouter } from 'vue-router'
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
+const navigate = useRouter()
 onMounted(() => {
   setTimeout(state.timeInter = <any>setInterval(() => {
     if (isActivePicture.value == 0) {
@@ -144,6 +200,17 @@ let isActiveAbility = ref<number>(0)
 </script>
  
 <style scoped lang="less">
+//展示动画，淡进淡出
+@keyframes change {
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
 // 1、内容容器
 .content-warpper {
   height: 94vh;
@@ -267,10 +334,13 @@ let isActiveAbility = ref<number>(0)
     top: 0;
 
     .title-warpper {
+
       .title {
         display: flex;
         height: 50px;
         margin-bottom: 25px;
+        animation-name: change;
+        animation-duration: 1.5s;
 
         img {
           display: block;
@@ -290,6 +360,8 @@ let isActiveAbility = ref<number>(0)
         display: block;
         margin-bottom: 25px;
         font-size: 18px;
+        animation-name: change;
+        animation-duration: 1.5s;
       }
     }
 
@@ -331,13 +403,18 @@ let isActiveAbility = ref<number>(0)
 }
 
 // 2、能力特性容器
-@abilityColor: #5CCFFE;
+@abilityColor: #E0C3FC;
+// @abilityColor: #5CCFFE;
 
 .ability-warpper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
+  align-items: center;
+  background-image: url('../image/ability/bg.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 25% 0;
 
   .menus-title {
     letter-spacing: 10px;
@@ -353,6 +430,7 @@ let isActiveAbility = ref<number>(0)
 
   //列表字体大小
   @menusFrontSize: 25px;
+
   //点击warpper
   .menus-points-warpper {
     display: flex;
@@ -361,6 +439,8 @@ let isActiveAbility = ref<number>(0)
     font-size: @menusFrontSize;
     color: #697b8c;
     margin-top: 30px;
+    text-align: center;
+    width: 100%;
 
     //span后的伪类，光标
     .spanAfter() {
@@ -426,10 +506,88 @@ let isActiveAbility = ref<number>(0)
       }
     }
   }
+
+  .spread {
+    display: block;
+    width: 85%;
+    height: 2px;
+    opacity: .8;
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #fff 11%, #E0C3FC 35%, #8EC5FC 83%);
+    border-radius: 15px / 1px;
+
+  }
+
   //展示warpper
   .ability-show-warpper {
-    margin-top: 25px;
-    height: 200px;
+    margin: 25px 4.5%;
+    margin-bottom: 200px;
+
+    .ability-show-item {
+      width: 100%;
+      margin: 40px 0;
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      // align-items: center;
+      animation-name: change;
+      animation-duration: 1.5s;
+
+      .left-description {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 22%;
+        margin-left: 20%;
+
+        .icon-ablity {
+          // width:80px;
+          height: 55px;
+        }
+
+        h3 {
+          margin: 25px auto;
+          position: relative;
+
+          span {
+            position: relative;
+
+            span {
+              background-color: #8744E1;
+              display: block;
+              height: 12px;
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              border-radius: 2px;
+              opacity: .4
+            }
+          }
+
+        }
+
+        p {
+          word-break: break-all;
+          word-wrap: break-word;
+          margin: 25px auto;
+          color: rgba(0, 0, 0, .65);
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 22px;
+        }
+      }
+
+      .right-image {
+        width: 50%;
+        margin-top: 50px;
+
+        img {
+          width: 90%;
+          box-shadow: 16px 20px 7px;
+
+        }
+      }
+    }
   }
 }
 
