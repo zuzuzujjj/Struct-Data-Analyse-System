@@ -640,6 +640,7 @@ let isActiveAbility = ref<number>(0)
     align-items: center;
     width: 50%;
     position: relative;
+    margin-right: 2.5%;
 
     .first {
         position: absolute;
