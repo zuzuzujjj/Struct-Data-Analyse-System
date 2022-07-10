@@ -152,8 +152,9 @@
       </div>
     </div>
     <!-- 第三部分 -->
-    <div style="height:800px">
-      333</div>
+    <div style="height:2000px">
+
+    </div>
   </main>
 </template>
  
@@ -574,6 +575,9 @@ let isActiveAbility = ref<number>(0)
           font-size: 14px;
           font-weight: 400;
           line-height: 22px;
+        }
+        a{
+          color:#8744E1
         }
       }
 

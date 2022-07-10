@@ -19,7 +19,7 @@
           <li :class="currentPath === '/' ? 'isCurrent' : ''" @click="navigate.push('/')"><span>首页</span></li>
           <li :class="currentPath === '/struct-data' ? 'isCurrent' : ''" @click="navigate.push('/struct-data')"><span>数据知识图谱</span></li>
           <li :class="currentPath === '/data-analysis' ? 'isCurrent' : ''" @click="navigate.push('/data-analysis')"><span>数据分析</span></li>
-          <li :class="currentPath === '/document' ? 'isCurrent' : ''" @click="navigate.push('document')"><span>文档</span></li>
+          <li :class="currentPath === '/document' ? 'isCurrent' : ''" @click="navigate.push('/document')"><span>文档</span></li>
           <li class="top-right-container">
             <a href="https://github.com/suanzi-yi/Struct-Data-Analyse-System.git" target="_blank">
               <svg t="1657152865382" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -45,12 +45,12 @@ import { ref, reactive, onMounted } from 'vue'
 const navigate=useRouter()
 const router = useRoute()
 const currentPath: string =router.path
-console.log(currentPath);
 
 
 </script>
  
 <style scoped lang="less">
+//header的菜单颜色
 @menusColor: #8744E1;
 
 .top-header {
