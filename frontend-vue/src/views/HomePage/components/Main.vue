@@ -152,9 +152,22 @@
       </div>
     </div>
     <!-- 第三部分 -->
-    <div style="height:2000px">
-
+    <div class="todo-warpper">
+      <!-- 左侧图片 -->
+      <div class="left-image-container">
+        <img src="../image/todo/bg2.svg" alt="">
+      </div>
+      <!-- 右侧文本 -->
+      <div class="right-content-container">
+        <img src="../image/todo/云.svg" alt="" class="first">
+        <img src="../image/todo/云.svg" alt="" class="second">
+        <!-- //TODO -->
+        <span>展望未来</span>
+        <p>我们希望</p>
+      </div>
     </div>
+
+
   </main>
 </template>
  
@@ -522,7 +535,7 @@ let isActiveAbility = ref<number>(0)
   //展示warpper
   .ability-show-warpper {
     margin: 25px 4.5%;
-    margin-bottom: 200px;
+    margin-bottom: 108px;
 
     .ability-show-item {
       width: 100%;
@@ -576,8 +589,9 @@ let isActiveAbility = ref<number>(0)
           font-weight: 400;
           line-height: 22px;
         }
-        a{
-          color:#8744E1
+
+        a {
+          color: #8744E1
         }
       }
 
@@ -596,4 +610,60 @@ let isActiveAbility = ref<number>(0)
 }
 
 // 3
+.todo-warpper {
+  margin: 15% 0 20% 0;
+  display: flex;
+  height: 650px;
+  width: 100%;
+  justify-content: space-between;
+
+  // align-items:center;
+  .left-image-container {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .right-content-container {
+    background-image: url('../image/todo/title-bg2.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 0 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    width: 50%;
+    position: relative;
+
+    .first {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .second{
+      position: absolute;
+      right: 5%;
+      top:10%;
+    }
+
+    span {
+      display: block;
+      font-size: 20px;
+      z-index: 2;
+      margin-top: 25px;
+    }
+
+    p {
+      word-break: break-all;
+      word-wrap: break-word;
+      z-index: 2;
+    }
+  }
+}
 </style>
