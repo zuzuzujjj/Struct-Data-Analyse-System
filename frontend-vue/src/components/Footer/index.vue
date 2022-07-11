@@ -2,10 +2,11 @@
     <footer class="footer-warpper">
         <ul class="footer-item">
             <li>资源</li>
-            <li>知识图谱</li>
-            <li>数据分析</li>
-            <li>机器学习</li>
-            <li>文档</li>
+            <li> <a href="#/struct-data" target="">知识图谱</a>
+            </li>
+            <li><a href="#/data-analysis" target="">数据分析</a></li>
+            <li><a href="#/data-analysis" target="">机器学习</a></li>
+            <li><a href="#/document" target="">文档</a></li>
         </ul>
         <ul class="footer-item">
             <li>帮助</li>
@@ -48,14 +49,17 @@ import { ref, reactive } from 'vue'
     background-size: cover;
     background-position: 0 70%;
     background-repeat: no-repeat;
+    padding-top: 5%;
+
     .footer-item {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         width: 25%;
         padding-left: 20px;
+
         li {
-            
+
             text-align: center;
             margin: 12px 0;
             font-size: 14px;
@@ -63,15 +67,16 @@ import { ref, reactive } from 'vue'
             color: #697b8c;
 
             &:first-child {
-                color:rgba(0, 0, 0, 1);
+                color: rgba(0, 0, 0, 1);
                 margin-bottom: 24px;
                 font-size: 16px;
                 font-weight: 500;
             }
-            &:hover:not(&:first-child){
-                color:#8744E1;
+
+            &:hover:not(&:first-child) {
+                color: #8744E1;
             }
-            
+
         }
     }
 }

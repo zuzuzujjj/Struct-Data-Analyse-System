@@ -105,7 +105,7 @@
             </svg>
             <h3><span>结构化数据知识图谱<span></span></span></h3>
             <p>快速查询数据、知识图谱可视化、多维度分析与比较、数据关系简单明了</p>
-            <router-link to="" target="">查看详情</router-link>
+            <a href="#/struct-data" target="">查看详情</a>
           </div>
           <!-- 右边图片 -->
           <div class="right-image">
@@ -123,7 +123,7 @@
             </svg>
             <h3><span>非结构结数据分析<span></span></span></h3>
             <p>DataFrame数据操作与可视化、机器学习、数据分析,DataFrame数据操作与可视化、机器学习、数据分析,DataFrame数据操作与可视化、机器学习、数据分析</p>
-            <router-link to="/docment" target="">查看详情</router-link>
+            <a href="#/docment" target="">查看详情</a>
           </div>
           <!-- 右边图片 -->
           <div class="right-image">
@@ -163,7 +163,8 @@
         <img src="../image/todo/云.svg" alt="" class="second">
         <!-- //TODO -->
         <span>展望未来</span>
-        <p>我们希望</p>
+        <p>我们希望创建一个多种类型的数据库,涵盖不同领域的多种数据格式,丰富的数据与可视化手段,兼以数据分析与机器学习,希望构建一个完整而庞大的结构化数据生态。</p>
+        <p>通过数据分析与可视化,方便直观的审视数据维度,从中寻求我们需要的各类信息,通过数据挖掘发现与寻找数据中最有价值的部分</p>
       </div>
     </div>
 
@@ -636,11 +637,11 @@ let isActiveAbility = ref<number>(0)
     background-position: 0 60%;
     display: flex;
     flex-direction: column;
-    justify-content:center;
     align-items: center;
     width: 50%;
     position: relative;
     margin-right: 2.5%;
+    padding-top: 8%;
 
     .first {
         position: absolute;
@@ -650,20 +651,37 @@ let isActiveAbility = ref<number>(0)
     .second{
       position: absolute;
       right: 5%;
-      top:10%;
+      top:8%;
     }
 
     span {
       display: block;
-      font-size: 20px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 10px;
       z-index: 2;
       margin-top: 25px;
+      margin:35px 0;
+      position: relative;
+      &::before{
+        display: inline-block;
+        position: absolute;
+        left: -15px;
+        content: "";
+        height: 100%;
+        width:5px;
+        background-color:#8744E1 ;
+      }
     }
 
     p {
+      margin-top:40px;
       word-break: break-all;
       word-wrap: break-word;
       z-index: 2;
+      width: 50%;
+      text-indent:2em;
+      line-height: 29px;
     }
   }
 }
