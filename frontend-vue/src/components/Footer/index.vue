@@ -78,6 +78,11 @@ import { ref, reactive } from 'vue'
             }
 
         }
+
+        .icon {
+            vertical-align:baseline;
+            margin-right: 2px;
+        }
     }
 }
 </style>
