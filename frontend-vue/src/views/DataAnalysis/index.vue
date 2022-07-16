@@ -11,8 +11,11 @@
 <script lang='ts' setup>
 import Header from '../../components/Header/index.vue'
 
-import { ref, reactive } from 'vue'
-
+import { ref, reactive,onMounted } from 'vue'
+onMounted(()=>{
+  console.log(111);
+  
+})
 
 </script>
  

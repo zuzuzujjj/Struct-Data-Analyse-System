@@ -4,7 +4,7 @@
     <section class="content-warpper">
       <div class="main-content">
         <!-- 文档 -->
-        <div class="content-text">
+        <div class="content-text animate__animated animate__fadeInLeft">
           <div class="text-title">
             <img src="../../../assets/logo/logo2.png" alt="">
             <div class="label">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <!-- 右侧图 -->
-        <div class="content-right">
+        <div class="content-right animate__animated animate__fadeInRight">
           <div class="title-warpper">
             <!-- 结构化数据 -->
             <div class="title" v-if="isActivePicture == 0">
