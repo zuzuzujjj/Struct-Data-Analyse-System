@@ -32,12 +32,12 @@ export default (currentNode: any, props: any) => {
             }
         },
         modes: {
-            default: ['zoom-canvas', 'drag-node', 'activate-relations',
+            default: ['zoom-canvas', 'drag-node', 'activate-relations','drag-canvas',
                 {
                     type: 'tooltip', // 提示框
                     formatText(model: any) {
                         // 提示框文本内容
-                        const text = 'label: ' + model.label + '<br/> class: ' + model.class;
+                        const text = '主体: ' + model.label;
                         return text;
                     },
                 },
@@ -50,7 +50,7 @@ export default (currentNode: any, props: any) => {
                             model.source +
                             '<br/> target: ' +
                             model.target +
-                            '<br/> weight: ' +
+                            '<br/> 关系: ' +
                             model.weight;
                         return text;
                     },
@@ -82,7 +82,7 @@ export default (currentNode: any, props: any) => {
     const defaultPuling = {
         //小地图
         minimap: new G6.Minimap({
-            size: [100, 100],
+            size: props?.minimapszie ?? [100, 100],
             className: 'minimap',
             type: 'keyShape',
         }),
@@ -142,12 +142,24 @@ export default (currentNode: any, props: any) => {
         nodeStateStyles: props.options?.nodeStateStyles ?? defaultOptions.nodeStateStyles,
         edgeStateStyles: props.options?.edgeStateStyles ?? defaultOptions.edgeStateStyles
     }
+    //取出puling
+    const getPuling = () => {
+        let puling = []
+        if (props?.plugins?.includes('minimap')) {
+            puling.push(defaultPuling.minimap)
+        }
+        if (props?.plugins?.includes('toolbar')) {
+            puling.push(defaultPuling.toolbar)
+        }
+        console.log(puling);
+        return puling
+    }
     const graph = new G6.Graph({
         container: currentNode.value, // String | HTMLElement，必须，在 Step 1 中创建的容器 id 或容器本身
-        // width: currentNode.value.scollWidth, // Number，必须，图的宽度
-        // height: currentNode.value.scollHeight, // Number，必须，图的高度
+        width: currentNode.value.scollWidth, // Number，必须，图的宽度
+        height: currentNode.value.scollHeight, // Number，必须，图的高度
         ...options,
-        plugins: [props?.plugins?.minimap == true ? defaultPuling.minimap : '', defaultPuling.toolbar]
+        plugins: getPuling()
     });
 
     //绑定事件

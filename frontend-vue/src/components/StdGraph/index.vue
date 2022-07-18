@@ -20,6 +20,10 @@ const props = defineProps({
     plugins: {
         required: false,
         type: Object,
+    },
+    minimapszie:{
+        required: false,
+        type:Array,
     }
 })
 //绘图实例
@@ -33,7 +37,7 @@ const reDraw = () => {
             () => {
                 console.log('尺寸改变');
                 if (!currentNode.value || !currentNode.value.scrollWidth || !currentNode.value.scrollHeight) return;
-                graph.destroy();
+                graph.destroy()
                 graph = useGraph(currentNode, props)
                 drawGraph(graph)
             }

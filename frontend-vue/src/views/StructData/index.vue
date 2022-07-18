@@ -53,7 +53,7 @@ let getSearch = () => {
 
 }
 //展示内容逻辑块
-let notSearch= ref<boolean>(true)
+let notSearch = ref<boolean>(true)
 </script>
  
 <style scoped lang="less">
@@ -132,9 +132,10 @@ let notSearch= ref<boolean>(true)
       line-height: 50px;
       padding-right: 5px;
       margin-right: 3%;
+
       .icon {
         height: 40%;
-        
+
         vertical-align: middle;
       }
     }
@@ -166,5 +167,11 @@ let notSearch= ref<boolean>(true)
       line-height: 30px;
     }
   }
+}
+
+// 内容展示区css
+.content-warpper {
+  background-color: #f7f7f7;
+
 }
 </style>

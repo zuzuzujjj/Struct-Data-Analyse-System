@@ -59,7 +59,7 @@
           left: 0;
           bottom: 0;
       }
-
+      /* tooltip */
       .g6-tooltip {
           border: 1px solid #e2e2e2;
           border-radius: 4px;
@@ -69,6 +69,7 @@
           padding: 10px 8px;
           box-shadow: rgb(174, 174, 174) 0px 0px 10px;
       }
+      /* toolbar */
       .g6-component-toolbar{
         left: 0;
         top: 0;
