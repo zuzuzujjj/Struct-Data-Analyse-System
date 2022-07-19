@@ -16,12 +16,23 @@
         <p class="item-title">结构化数据预览,可视化解决方案,图表丰富。</p>
         <p class="item-content">通过多种类型的图表展示方式,快速轻松的制作出满意的图表,结构化数据分析一步到位,快速的生成所需要的相关图表数据等,知识图谱查询。</p>
         <p class="item-content">多样的交互手段,多种类型的行为模式,快速的分析潜在关联因素,挖掘知识图谱中的相关性因素,通过简洁的操作,快速分析</p>
-        <span @click="quickToUse">快速使用</span>
+        <span @click="quickToUse" class="quickToUse">快速使用</span>
       </div>
     </div>
     <!-- 第二块 -->
+    <div class="title">
+      丰富的展现维度
+    </div>
+    <div class="description">
+      通过不同形式指定展示内容
+    </div>
     <div class="card-warpper">
-      <Card class="card-item"></Card>
+      <Card class="card-item">
+        <div class="slot-warpper">
+          <p>XXX</p>
+          <p>XXX</p>
+        </div>
+      </Card>
       <Card class="card-item"></Card>
     </div>
     <!-- 第三块 -->
@@ -31,8 +42,14 @@
     <div class="description">
       随时掌握最新的热搜字词
     </div>
-    <div style="height:500px">
-      111 </div>
+    <div class="keyword-warpper">
+      <div class="keyword-container">
+        <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index">
+          <span class="searchName">{{ item.searchName }}</span>
+          <span class="searchType">{{ item.searchType }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
  
@@ -42,6 +59,7 @@ import { ref, reactive, onMounted } from 'vue'
 import StdGraph from '@/components/StdGraph/index.vue'
 import useGraphData from '../../../hooks/useGraphData'
 import Card from './Card.vue'
+//第一部分图数据
 let nodes = [
   {
     id: 'node1', // String，该节点存在则必须，节点的唯一标识
@@ -64,16 +82,48 @@ let edges = [
   },
 ]
 let data = useGraphData(nodes, edges)
-
+//点击事件
 const quickToUse = () => {
   console.log('quickToUse');
 
   window.scrollTo(0, 0);
 }
-onMounted(() => {
-  console.log(data);
 
-})
+//第三部分渲染数据
+const keywordSearch = [
+  {
+    searchName: '霹雳无敌祖靖霄',
+    searchType: '人物'
+  },
+  {
+    searchName: '韩哥牛逼韩仕海',
+    searchType: '人物'
+  },
+  {
+    searchName: '安倍晋三遇刺',
+    searchType: '事件'
+  },
+  {
+    searchName: '我什么时候暴富',
+    searchType: '做梦'
+  },
+  {
+    searchName: '我什么时候暴富',
+    searchType: '做梦'
+  },
+  {
+    searchName: '我什么时候暴富',
+    searchType: '做梦'
+  },
+  {
+    searchName: '我什么时候暴富',
+    searchType: '做梦'
+  },
+  {
+    searchName: '我什么时候暴富',
+    searchType: '做梦'
+  },
+]
 </script>
  
 <style scoped lang='less'>
@@ -82,7 +132,6 @@ onMounted(() => {
   padding: 0 4.5%;
   padding-top: 48px;
   background-color: #f7f7f7;
-  margin-bottom: 5%;
 }
 
 .title {
@@ -142,7 +191,9 @@ onMounted(() => {
       line-height: 24px;
       max-height: 72px;
       margin-bottom: 25px;
-
+    }
+    .quickToUse{
+      margin-top:20%;
     }
   }
 }
@@ -156,6 +207,43 @@ onMounted(() => {
   .card-item {
     width: 45%;
     height: 100%;
+
+    .slot-warpper {}
+  }
+}
+
+.keyword-warpper {
+  width: 100%;
+
+  .keyword-container {
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .12);
+
+    .keyword-item {
+      width: 44%;
+      padding: 30px;
+      flex-grow: 1;
+      border-bottom: 1px solid #e0e0e0;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .searchName {
+        font-size: 16px;
+        line-height: 24px;
+        padding-right: 16px;
+        margin-left: 5%;
+      }
+
+      .searchType {
+        color: rgba(0, 0, 0, .54);
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
   }
 }
 </style>

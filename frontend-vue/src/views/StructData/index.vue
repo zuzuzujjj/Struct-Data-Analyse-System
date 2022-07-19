@@ -36,6 +36,16 @@
     <NotSearch v-if="notSearch"></NotSearch>
     <!-- 搜索了时显示搜索内容 -->
   </div>
+  <footer class="footer-warpper">
+    <div class="left-logo">
+      logo
+    </div>
+    <ul class="right-description">
+      <li><a href="#/data-analysis" target="">数据分析</a></li>
+      <li><a href="#/data-analysis" target="">机器学习</a></li>
+      <li><a href="#/document" target="">文档</a></li>
+    </ul>
+  </footer>
 </template>
  
  
@@ -50,6 +60,9 @@ let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑'
 let getSearch = () => {
   //Ajax请求
   alert(inputSearch.value)
+  setTimeout(() => {
+    notSearch.value = false
+  }, 3000)
 
 }
 //展示内容逻辑块
@@ -172,6 +185,38 @@ let notSearch = ref<boolean>(true)
 // 内容展示区css
 .content-warpper {
   background-color: #f7f7f7;
+}
 
+.footer-warpper {
+  background-color: #f7f7f7;
+  padding: 48px 64px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .left-logo {
+    width: 150px;
+  }
+
+  .right-description {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 20%;
+    padding-left: 20px;
+
+    li {
+      flex-grow: 1;
+      margin: 12px 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #697b8c;
+      font-family: 'Roboto', 'Heebo', Arial, sans-serif;
+
+      &:hover {
+        color: #8744E1;
+      }
+    }
+  }
 }
 </style>
