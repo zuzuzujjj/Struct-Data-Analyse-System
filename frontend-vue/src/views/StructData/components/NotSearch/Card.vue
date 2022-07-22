@@ -13,7 +13,7 @@
 <script lang='ts' setup>
 import { ref, reactive } from 'vue'
 import StdGraph from '@/components/StdGraph/index.vue'
-import useGraphData from '../../../hooks/useGraphData'
+import useGraphData from '@/hooks/useGraphData'
 // let nodes = [
 //     {
 //         id: 'node1', // String，该节点存在则必须，节点的唯一标识
@@ -457,9 +457,12 @@ const options = {
     &:hover {
         box-shadow: 0 8px 10px 1px rgb(0 0 0 / 7%), 0 3px 14px 3px rgb(0 0 0 / 6%), 0 4px 5px 0 rgb(0 0 0 / 10%);
     }
-
+    .topdescription{
+        flex-grow: 1;
+    }
     .bottom-graph {
         height: 60%;
+        flex-grow: 2;
     }
 }
 </style>

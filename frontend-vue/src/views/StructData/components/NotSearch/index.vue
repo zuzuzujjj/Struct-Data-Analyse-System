@@ -44,7 +44,7 @@
     </div>
     <div class="keyword-warpper">
       <div class="keyword-container">
-        <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index">
+        <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index" @click="emit('setinputSearch',item.searchName)">
           <span class="searchName">{{ item.searchName }}</span>
           <span class="searchType">{{ item.searchType }}</span>
         </div>
@@ -57,7 +57,7 @@
 <script lang='ts' setup>
 import { ref, reactive, onMounted } from 'vue'
 import StdGraph from '@/components/StdGraph/index.vue'
-import useGraphData from '../../../hooks/useGraphData'
+import useGraphData from '@/hooks/useGraphData'
 import Card from './Card.vue'
 //第一部分图数据
 let nodes = [
@@ -85,7 +85,6 @@ let data = useGraphData(nodes, edges)
 //点击事件
 const quickToUse = () => {
   console.log('quickToUse');
-
   window.scrollTo(0, 0);
 }
 
@@ -124,6 +123,9 @@ const keywordSearch = [
     searchType: '做梦'
   },
 ]
+const emit = defineEmits<{
+  (event: 'setinputSearch',value:any): void
+}>()
 </script>
  
 <style scoped lang='less'>
@@ -208,7 +210,7 @@ const keywordSearch = [
     width: 45%;
     height: 100%;
 
-    .slot-warpper {}
+    // .slot-warpper {}
   }
 }
 

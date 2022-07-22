@@ -1,6 +1,7 @@
 <template>
   <div class="top-container">
     <Header></Header>
+    <!-- 输入框 -->
     <div class="input-warpper">
       <!-- 背景标题 -->
       <p class="animate__animated animate__fadeInDown">强大的图数据搜索与可视化系统</p>
@@ -31,14 +32,21 @@
       </ul>
     </div>
   </div>
+  <!-- 内容展示区 -->
   <div class="content-warpper">
     <!-- 没搜索时显示这个 -->
-    <NotSearch v-if="notSearch"></NotSearch>
+    <NotSearch v-if="notSearch" @setinputSearch="setinputSearch"></NotSearch>
     <!-- 搜索了时显示搜索内容 -->
   </div>
+  <!-- 底部footer -->
   <footer class="footer-warpper">
     <div class="left-logo">
-      logo
+      <img src="../../assets/logo/logo2.png" alt="logo">
+      <span>
+      </span>
+      <p>
+        知识图谱
+      </p>
     </div>
     <ul class="right-description">
       <li><a href="#/data-analysis" target="">数据分析</a></li>
@@ -50,9 +58,9 @@
  
  
 <script lang='ts' setup>
-import Header from '../../components/Header/index.vue'
-import NotSearch from './components/NotSearch.vue'
-import { ref, reactive, nextTick, onMounted } from 'vue'
+import Header from '@/components/Header/index.vue'
+import NotSearch from './components/NotSearch/index.vue'
+import { ref, reactive } from 'vue'
 
 //输入逻辑块
 let inputSearch = ref<string | number>('')
@@ -67,6 +75,11 @@ let getSearch = () => {
 }
 //展示内容逻辑块
 let notSearch = ref<boolean>(true)
+//第三部分热搜词回调
+const setinputSearch = (value: any) => {
+  inputSearch.value = value
+  window.scrollTo(0, 0)
+}
 </script>
  
 <style scoped lang="less">
@@ -193,9 +206,31 @@ let notSearch = ref<boolean>(true)
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
+  padding-top:10%;
   .left-logo {
-    width: 150px;
+    margin-left:1%;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+
+    img {
+      vertical-align: middle;
+      width: 45px;
+    }
+
+    span {
+      margin: 0 20px;
+      background-color: #8744E1;
+      width: 10px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    p {
+      font-size: 20px;
+      width: 100%;
+    }
   }
 
   .right-description {
@@ -204,12 +239,13 @@ let notSearch = ref<boolean>(true)
     justify-content: flex-start;
     width: 20%;
     padding-left: 20px;
+    padding-top: 3px;
 
     li {
       flex-grow: 1;
       margin: 12px 0;
       font-size: 16px;
-      line-height: 1.5;
+      line-height: normal;
       color: #697b8c;
       font-family: 'Roboto', 'Heebo', Arial, sans-serif;
 

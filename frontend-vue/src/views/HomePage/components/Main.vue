@@ -25,10 +25,10 @@
             <!-- 结构化数据 -->
             <div class="title" v-if="isActivePicture == 0">
               <img src="https://gw.alipayobjects.com/zos/antfincdn/IqREAm36K7/1.png" alt="">
-              <h2>结构化数据</h2>
+              <h2>足球结构化数据</h2>
             </div>
             <p v-if="isActivePicture == 0">
-              具有多种结构化数据与可视化方案
+              具有多种足球结构化数据与可视化方案
             </p>
             <!-- 非结构化数据 -->
             <div class="title" v-if="isActivePicture == 1">
@@ -38,19 +38,30 @@
             <p v-if="isActivePicture == 1">
               非结构化数据分析与可视化,机器学习
             </p>
-
           </div>
 
           <div class="imag-warpper">
             <!-- 1==>结构化数据 -->
             <div :class="['img-container', isActivePicture == 1 ? 'isActivePicture' : '']" @mouseover="hoverPicture(1)"
               @mouseleave="overPicture">
-              <img src="../image/p1.png" alt="">
+              <div class="img-content">
+                <!-- 四个角放足球元素 -->
+
+                <!-- 主图 -->
+                <img class="img-show" src="../image/p1.png" alt="">
+              </div>
             </div>
             <!-- 0==>非结构化数据 -->
             <div :class="['img-container', isActivePicture == 0 ? 'isActivePicture' : '']" @mouseover="hoverPicture(0)"
               @mouseleave="overPicture">
-              <img src="../image/p2.png" alt="">
+              <div class="img-content">
+                <!-- 四个角放足球元素 -->
+                <img class="sport-element" src="../image/sportelement/leftbottom.svg" alt="">
+                <img class="sport-element" src="../image/sportelement/rightbottom.svg" alt="">
+                <img class="sport-element" src="../image/sportelement/righttop.svg" alt="">
+                <!-- 主图 -->
+                <img class="img-show" src="../image/p2.png" alt="">
+              </div>
             </div>
           </div>
 
@@ -177,15 +188,11 @@
 import { useRouter } from 'vue-router'
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 const navigate = useRouter()
-onMounted(() => {
-  setTimeout(state.timeInter = <any>setInterval(() => {
-    if (isActivePicture.value == 0) {
-      isActivePicture.value = 1
-    } else {
-      isActivePicture.value = 0
-    }
-  }, state.timeActive), state.timeActive)
 
+onMounted(() => {
+  setTimeout(() => {
+    state.timeInter = <any>setInterval(pictureTimer, state.timeActive)
+  }, state.timeActive)
 })
 onUnmounted(() => {
   clearInterval(state.timeInter)
@@ -194,21 +201,21 @@ onUnmounted(() => {
 let isActivePicture = ref<number>(0)
 const state = reactive<{ timeInter: string, timeActive: number }>({
   timeInter: '',  //定时器ID
-  timeActive: 5000 //时间间隔
+  timeActive: 3000 //时间间隔
 
 })
+//轮播图定时器
+let pictureTimer = () => {
+  isActivePicture.value++;
+  isActivePicture.value = isActivePicture.value % 2;
+}
+
 const hoverPicture = (value: number) => {
   isActivePicture.value = value
   clearInterval(state.timeInter)
 }
 const overPicture = () => {
-  setTimeout(state.timeInter = <any>setInterval(() => {
-    if (isActivePicture.value == 0) {
-      isActivePicture.value = 1
-    } else {
-      isActivePicture.value = 0
-    }
-  }, state.timeActive), state.timeActive)
+  state.timeInter = <any>setInterval(pictureTimer, state.timeActive)
 }
 //第二部分激活菜单
 let isActiveAbility = ref<number>(0)
@@ -249,7 +256,7 @@ let isActiveAbility = ref<number>(0)
     margin-left: 4.5%;
     position: relative;
     top: 20%;
-    z-index: 1;
+    // z-index: 1;
     // width: 35%;
 
     // 标题
@@ -391,8 +398,36 @@ let isActiveAbility = ref<number>(0)
         position: absolute;
         box-shadow: 16px 20px 7px;
 
-        img {
+        .img-content {
           width: 100%;
+          height: 100%;
+          position: relative;
+
+          //主图
+          .img-show {
+            width: 100%;
+          }
+
+          //四角元素
+          .sport-element {
+            position: absolute;
+            width: 25%;
+
+            &:nth-child(1) {
+              bottom: -15%;
+              left: -10%;
+            }
+
+            &:nth-child(2) {
+              bottom: -15%;
+              right: -10%;
+            }
+
+            &:nth-child(3) {
+              top: -15%;
+              right: -10%;
+            }
+          }
         }
 
         &:first-child {
@@ -401,7 +436,7 @@ let isActiveAbility = ref<number>(0)
           z-index: 1;
         }
 
-        &:last-child {
+        &:nth-child(2) {
           top: 80px;
           left: 80px;
           z-index: 1;
@@ -644,14 +679,15 @@ let isActiveAbility = ref<number>(0)
     padding-top: 8%;
 
     .first {
-        position: absolute;
-        left: 0;
-        top: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
-    .second{
+
+    .second {
       position: absolute;
       right: 5%;
-      top:8%;
+      top: 8%;
     }
 
     span {
@@ -661,26 +697,27 @@ let isActiveAbility = ref<number>(0)
       letter-spacing: 10px;
       z-index: 2;
       margin-top: 25px;
-      margin:35px 0;
+      margin: 35px 0;
       position: relative;
-      &::before{
+
+      &::before {
         display: inline-block;
         position: absolute;
         left: -15px;
         content: "";
         height: 100%;
-        width:5px;
-        background-color:#8744E1 ;
+        width: 5px;
+        background-color: #8744E1;
       }
     }
 
     p {
-      margin-top:40px;
+      margin-top: 40px;
       word-break: break-all;
       word-wrap: break-word;
       z-index: 2;
       width: 50%;
-      text-indent:2em;
+      text-indent: 2em;
       line-height: 29px;
     }
   }

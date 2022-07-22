@@ -7,7 +7,7 @@
 <script lang='ts' setup>
 import { Graph, GraphData } from '@antv/g6'
 import { ref, reactive, onMounted, watch, toRaw, onUnmounted } from 'vue'
-import useGraph from '../../hooks/useGraph'
+import useGraph from '@/hooks/useGraph'
 const currentNode = ref()
 const props = defineProps({
     data: {
