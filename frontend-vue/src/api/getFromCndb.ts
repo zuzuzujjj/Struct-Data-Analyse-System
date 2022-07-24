@@ -1,5 +1,5 @@
 import axios from 'axios'
-import useGraphData, { node, edge } from '@/hooks/useGraphData'
+import { node, edge } from '@/hooks/useGraphData'
 
 //cndb接口
 //返回所有的实体型
@@ -36,7 +36,7 @@ export const getNodes = async (mention: any) => {
         label: mention,
     })
     //裁剪最后的desc
-    tempData.splice(-1, 1)
+    // tempData.splice(-1, 1)
     tempData.forEach((item: any, index: number) => {
         let node: node = {
             id: String(index),

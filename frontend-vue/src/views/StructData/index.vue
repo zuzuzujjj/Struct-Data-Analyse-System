@@ -7,14 +7,14 @@
       <p class="animate__animated animate__fadeInDown">强大的图数据搜索与可视化系统</p>
       <!-- 输入框 -->
       <div class="input-box animate__animated animate__fadeIn">
-        <input type="text" placeholder="输入搜索词或主题" v-model="inputSearch" @keyup.enter="getSearch">
+        <input type="text" placeholder="输入搜索词或主题" v-model="inputSearch" @keyup.enter="getSearchEntity">
         <span @click="inputSearch = ''" class="delete-icon"><svg t="1657855668772" class="icon" viewBox="0 0 1024 1024"
             version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5125">
             <path
               d="M547.2 512l416-416c9.6-9.6 9.6-25.6 0-35.2s-25.6-9.6-35.2 0l-416 416-416-416c-9.6-9.6-25.6-9.6-35.2 0s-9.6 25.6 0 35.2l416 416-416 416c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l416-416 416 416c9.6 9.6 25.6 9.6 35.2 0s9.6-25.6 0-35.2L547.2 512z"
               p-id="5126"></path>
           </svg></span>
-        <span @click="getSearch" class="search-icon">
+        <span @click="getSearchEntity" class="search-icon">
           <svg t="1657855408940" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
             p-id="2263">
             <path
@@ -35,8 +35,18 @@
   <!-- 内容展示区 -->
   <div class="content-warpper">
     <!-- 没搜索时显示这个 -->
-    <NotSearch v-if="notSearch" @setinputSearch="setinputSearch"></NotSearch>
+    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
+    <!-- 多个实体型表 -->
+    <div class="allentities-warpper" v-if="searchState.isManyEntity">
+      <div class="entity-item" v-for="(item, index) in allEntity.allEntity" :key="index" @click="currentEntity = item">
+        {{ item }}</div>
+    </div>
     <!-- 搜索了时显示搜索内容 -->
+    <OnSearch v-if="searchState.isSearched"></OnSearch>
+    <!-- 404-notfound -->
+    <div class="no-entity" v-if="searchState.isNotEntity">
+      404 没找到！
+    </div>
   </div>
   <!-- 底部footer -->
   <footer class="footer-warpper">
@@ -60,54 +70,122 @@
 <script lang='ts' setup>
 import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
-
+import OnSearch from './components/OnSearch/index.vue'
 //api接口
 import { getEntity, getNodes } from '@/api/getFromCndb'
-import { ref, reactive, provide } from 'vue'
+import { ref, reactive, provide, watch } from 'vue'
+//hook
 import useGraphData, { edge, node } from '@/hooks/useGraphData';
 
 //输入逻辑块
 let inputSearch = ref<string | number>('')
 let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑', '苦苦', '修行子', '列书', '永生'])
+//所有实体型数组
+let allEntity = reactive<{ allEntity: string[] }>({ allEntity: [] })
+//当前实体型
+let currentEntity = ref<string>('')
+
+//管理是否搜索、搜索结果的状态机
+let searchState = reactive<{
+  isNotSearch: boolean;
+  isManyEntity: boolean;
+  isSearched: boolean;
+  isNotEntity: boolean;
+}>({
+  isNotSearch: true, //是否没搜索
+  isManyEntity: false, //是否有多个实体型
+  isSearched: false, //是否得到单实体型数据
+  isNotEntity: false //是否没查找到此实体
+})
+
+
 //初始化默认节点
-let nodes:node[] = [
-    {
-        id: 'node1', // String，该节点存在则必须，节点的唯一标识
-        label: "Circle1",
-        x: 100, // Number，可选，节点位置的 x 值
-        y: 200, // Number，可选，节点位置的 y 值
-    },
-    {
-        id: 'node2', // String，该节点存在则必须，节点的唯一标识
-        label: "Circle2",
-        x: 300, // Number，可选，节点位置的 x 值
-        y: 200, // Number，可选，节点位置的 y 值
-    },
+let nodes: node[] = [
+  {
+    id: 'node1', // String，该节点存在则必须，节点的唯一标识
+    label: "Circle1",
+    x: 100, // Number，可选，节点位置的 x 值
+    y: 200, // Number，可选，节点位置的 y 值
+  },
+  {
+    id: 'node2', // String，该节点存在则必须，节点的唯一标识
+    label: "Circle2",
+    x: 300, // Number，可选，节点位置的 x 值
+    y: 200, // Number，可选，节点位置的 y 值
+  },
 ]
-let edges:edge[] = [
-    {
-        source: 'node1', // String，必须，起始点 id
-        target: 'node2', // String，必须，目标点 id
-    },
+let edges: edge[] = [
+  {
+    source: 'node1', // String，必须，起始点 id
+    target: 'node2', // String，必须，目标点 id
+  },
 ]
 //搜索节点数据
 let searchData = useGraphData(nodes, edges)
 //为后续组件提供内容
 provide('searchData', searchData)
-//动态更改节点
-let getSearch = async () => {
+
+//动态更改节点、请求数据
+const getSearchEntity = async () => {
+  //搜索为空，展示主页
+  if (inputSearch.value==''){
+    searchState.isManyEntity = false
+    searchState.isSearched = false
+    searchState.isNotEntity = false
+    searchState.isNotSearch= true
+    return
+  }
   //Ajax请求
+  /**
+   * 多个接口需要全部请求，然后拼接在一起
+   */
   let temp: any = await getEntity(inputSearch.value)
-  let  {nodes,edges} = await getNodes(inputSearch.value)
-  searchData.nodes= nodes
-  searchData.edges= edges
-  console.log('实体', temp)
-  console.log('三元组', searchData)
+  console.log('所有实体型为:', temp);
+  
+  //隐藏notsearch
+  searchState.isNotSearch = false
+  //搜索结果
+  if (temp.length === 1) {
+    //长度=1时，只有一个实体型
+    currentEntity.value = temp[0]
+  }
+  else if (temp.length > 1) {
+    //长度大于0
+    allEntity.allEntity = temp
+    //展示allentity组件
+    searchState.isManyEntity = true
+    searchState.isSearched = false
+    searchState.isNotEntity = false
+
+  }
+  else if (temp.length === 0) {
+    searchState.isManyEntity = false
+    searchState.isNotEntity = true
+    searchState.isSearched = false
+  }
 }
+//获取数据，并赋值给searchData
+const getEntityData = async () => {
+  console.log('获取实体数据');
+  let { nodes, edges } = await getNodes(currentEntity.value)
+  searchData.nodes = nodes
+  searchData.edges = edges
+  //展示onsearch
+  //单体
+  if (nodes.length === 1) {
+    searchState.isManyEntity = false
+    searchState.isNotEntity = true
+    searchState.isSearched = false
+  }
+  else {
+    searchState.isManyEntity = false
+    searchState.isSearched = true
+    searchState.isNotEntity = false
+  }
+}
+//监视currentEntity
+watch(currentEntity, getEntityData)
 
-
-//展示内容逻辑块
-let notSearch = ref<boolean>(true)
 //第三部分热搜词回调
 const setinputSearch = (value: any) => {
   inputSearch.value = value
