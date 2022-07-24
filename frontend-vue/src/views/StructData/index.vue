@@ -60,19 +60,52 @@
 <script lang='ts' setup>
 import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
-import { ref, reactive } from 'vue'
+
+//api接口
+import { getEntity, getNodes } from '@/api/getFromCndb'
+import { ref, reactive, provide } from 'vue'
+import useGraphData, { edge, node } from '@/hooks/useGraphData';
 
 //输入逻辑块
 let inputSearch = ref<string | number>('')
 let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑', '苦苦', '修行子', '列书', '永生'])
-let getSearch = () => {
+//初始化默认节点
+let nodes:node[] = [
+    {
+        id: 'node1', // String，该节点存在则必须，节点的唯一标识
+        label: "Circle1",
+        x: 100, // Number，可选，节点位置的 x 值
+        y: 200, // Number，可选，节点位置的 y 值
+    },
+    {
+        id: 'node2', // String，该节点存在则必须，节点的唯一标识
+        label: "Circle2",
+        x: 300, // Number，可选，节点位置的 x 值
+        y: 200, // Number，可选，节点位置的 y 值
+    },
+]
+let edges:edge[] = [
+    {
+        source: 'node1', // String，必须，起始点 id
+        target: 'node2', // String，必须，目标点 id
+    },
+]
+//搜索节点数据
+let searchData = useGraphData(nodes, edges)
+//为后续组件提供内容
+provide('searchData', searchData)
+//动态更改节点
+let getSearch = async () => {
   //Ajax请求
-  alert(inputSearch.value)
-  setTimeout(() => {
-    notSearch.value = false
-  }, 3000)
-
+  let temp: any = await getEntity(inputSearch.value)
+  let  {nodes,edges} = await getNodes(inputSearch.value)
+  searchData.nodes= nodes
+  searchData.edges= edges
+  console.log('实体', temp)
+  console.log('三元组', searchData)
 }
+
+
 //展示内容逻辑块
 let notSearch = ref<boolean>(true)
 //第三部分热搜词回调
@@ -206,9 +239,10 @@ const setinputSearch = (value: any) => {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-top:10%;
+  padding-top: 10%;
+
   .left-logo {
-    margin-left:1%;
+    margin-left: 1%;
     display: flex;
     justify-items: center;
     align-items: center;

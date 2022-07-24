@@ -9,7 +9,7 @@
     </div>
     <div class="description-card">
       <div class="left-card-item" id="leftCardG2" ref="leftCardG2">
-        <std-graph :data="data" :plugins="['minimap', 'toolbar']"></std-graph>
+        <std-graph :data="defaultData" :plugins="['minimap', 'toolbar']"></std-graph>
       </div>
       <div class="right-card-item">
         <span>精选</span>
@@ -44,7 +44,8 @@
     </div>
     <div class="keyword-warpper">
       <div class="keyword-container">
-        <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index" @click="emit('setinputSearch',item.searchName)">
+        <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index"
+          @click="emit('setinputSearch', item.searchName)">
           <span class="searchName">{{ item.searchName }}</span>
           <span class="searchType">{{ item.searchType }}</span>
         </div>
@@ -55,7 +56,7 @@
  
  
 <script lang='ts' setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted,inject,watch } from 'vue'
 import StdGraph from '@/components/StdGraph/index.vue'
 import useGraphData from '@/hooks/useGraphData'
 import Card from './Card.vue'
@@ -81,7 +82,8 @@ let edges = [
     label: '我是关系'
   },
 ]
-let data = useGraphData(nodes, edges)
+let defaultData = useGraphData(nodes, edges)
+
 //点击事件
 const quickToUse = () => {
   console.log('quickToUse');
@@ -124,7 +126,7 @@ const keywordSearch = [
   },
 ]
 const emit = defineEmits<{
-  (event: 'setinputSearch',value:any): void
+  (event: 'setinputSearch', value: any): void
 }>()
 </script>
  
@@ -194,8 +196,9 @@ const emit = defineEmits<{
       max-height: 72px;
       margin-bottom: 25px;
     }
-    .quickToUse{
-      margin-top:20%;
+
+    .quickToUse {
+      margin-top: 20%;
     }
   }
 }
