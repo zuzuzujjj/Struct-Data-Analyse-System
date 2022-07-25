@@ -71,12 +71,11 @@
 import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
 import OnSearch from './components/OnSearch/index.vue'
-//api接口
-import { getEntity, getNodes } from '@/api/getFromCndb'
+//vue
 import { ref, reactive, provide, watch } from 'vue'
 //hook
-import useGraphData, { edge, node } from '@/hooks/useGraphData';
-
+import useGraphData, { edge, node } from '@/hooks/useGraphData'
+import {useGetEntity,useGetEntityData} from '@/hooks/useGetData'
 //输入逻辑块
 let inputSearch = ref<string | number>('')
 let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑', '苦苦', '修行子', '列书', '永生'])
@@ -135,11 +134,7 @@ const getSearchEntity = async () => {
     searchState.isNotSearch= true
     return
   }
-  //Ajax请求
-  /**
-   * 多个接口需要全部请求，然后拼接在一起
-   */
-  let temp: any = await getEntity(inputSearch.value)
+  let temp: any = await useGetEntity(inputSearch.value)
   console.log('所有实体型为:', temp);
   
   //隐藏notsearch
@@ -167,7 +162,7 @@ const getSearchEntity = async () => {
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
   console.log('获取实体数据');
-  let { nodes, edges } = await getNodes(currentEntity.value)
+  let { nodes, edges } = await useGetEntityData(currentEntity.value)
   searchData.nodes = nodes
   searchData.edges = edges
   //展示onsearch
