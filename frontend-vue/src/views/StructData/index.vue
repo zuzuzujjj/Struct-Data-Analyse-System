@@ -37,10 +37,7 @@
     <!-- 没搜索时显示这个 -->
     <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
     <!-- 多个实体型表 -->
-    <div class="allentities-warpper" v-if="searchState.isManyEntity">
-      <div class="entity-item" v-for="(item, index) in allEntity.allEntity" :key="index" @click="currentEntity = item">
-        {{ item }}</div>
-    </div>
+    <AllEntity v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity"></AllEntity>
     <!-- 搜索了时显示搜索内容 -->
     <OnSearch v-if="searchState.isSearched"></OnSearch>
     <!-- 404-notfound -->
@@ -71,11 +68,12 @@
 import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
 import OnSearch from './components/OnSearch/index.vue'
+import AllEntity from './components/OnSearch/AllEntity.vue'
 //vue
-import { ref, reactive, provide, watch } from 'vue'
+import { ref, reactive, provide, watch, onMounted } from 'vue'
 //hook
 import useGraphData, { edge, node } from '@/hooks/useGraphData'
-import {useGetEntity,useGetEntityData} from '@/hooks/useGetData'
+import { useGetEntity, useGetEntityData } from '@/hooks/useGetData'
 //输入逻辑块
 let inputSearch = ref<string | number>('')
 let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑', '苦苦', '修行子', '列书', '永生'])
@@ -97,7 +95,10 @@ let searchState = reactive<{
   isNotEntity: false //是否没查找到此实体
 })
 
-
+onMounted(()=>{
+  console.log(allEntity);
+  
+})
 //初始化默认节点
 let nodes: node[] = [
   {
@@ -126,17 +127,19 @@ provide('searchData', searchData)
 
 //动态更改节点、请求数据
 const getSearchEntity = async () => {
+  //清空上一次的currentNode
+  currentEntity.value=''
   //搜索为空，展示主页
-  if (inputSearch.value==''){
+  if (inputSearch.value == '') {
     searchState.isManyEntity = false
     searchState.isSearched = false
     searchState.isNotEntity = false
-    searchState.isNotSearch= true
+    searchState.isNotSearch = true
     return
   }
   let temp: any = await useGetEntity(inputSearch.value)
   console.log('所有实体型为:', temp);
-  
+
   //隐藏notsearch
   searchState.isNotSearch = false
   //搜索结果
@@ -161,6 +164,8 @@ const getSearchEntity = async () => {
 }
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
+  //为空时不搜索
+  if(currentEntity.value===''){return}
   console.log('获取实体数据');
   let { nodes, edges } = await useGetEntityData(currentEntity.value)
   searchData.nodes = nodes
