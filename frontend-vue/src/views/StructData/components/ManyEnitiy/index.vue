@@ -1,7 +1,7 @@
 <template>
     <div class="allentities-warpper">
-        <div class="allentities-content">
-            <!-- 搜索框 -->
+        <div class="allentities-content animate__animated animate__fadeInLeft">
+            <!-- 头部 -->
             <div class="entity-title">
                 <span>您搜索的实体为多义词</span>
                 <!-- 输入框 -->
@@ -21,15 +21,24 @@
             </div>
             <!-- 表头 -->
             <div class="entity-item item-header">
-                <li class="id">Entity NO.</li>
-                <li class="name">Entity Name</li>
+                <li class="id">实体编号</li>
+                <li class="name">实体名称</li>
                 <li class="action">Action</li>
             </div>
             <!-- 表项 -->
             <div class="entity-item" v-for="(item, index) in allEntities" :key="index">
-                <li class="id">{{ index }}</li>
-                <li class="name">{{ item }}</li>
-                <li class="action"><button @click="emit('update:currentEntity', item)">点我</button></li>
+                <li class="id animate__animated animate__fadeInLeft">{{ index }}</li>
+                <li class="name animate__animated animate__fadeInLeft">{{ item }}</li>
+                <li class="action animate__animated animate__fadeInLeft">
+                    <el-button @click="emit('update:currentEntity', item)" color="#626aef" round :icon="Search">查看详情
+                    </el-button>
+                </li>
+            </div>
+            <!-- 无匹配的时候显示 -->
+            <div class="entity-item" v-if="allEntities.length === 0">
+                <li style="text-align: center;width: 100%;">
+                    无匹配选项！
+                </li>
             </div>
         </div>
     </div>
@@ -38,6 +47,7 @@
  
 <script lang='ts' setup>
 import { ref, reactive, onMounted, computed } from 'vue'
+import { Search } from '@element-plus/icons-vue'
 //anllentity：reactive({allEntity:[]})
 const props = defineProps({
     allEntity: {
@@ -49,6 +59,7 @@ const props = defineProps({
 const emit = defineEmits(['update:currentEntity'])
 //添加过滤逻辑
 let filterKey = ref<string>('')
+//展示的实体型
 const allEntities = computed(() => {
     let entities: string[] = props.allEntity.allEntity
     let filterData: string[] = entities.filter((value) => {
@@ -64,17 +75,30 @@ onMounted(() => {
 <style scoped lang="less">
 .allentities-warpper {
     padding: 0 4.5%;
-    padding-top: 48px;
-
+    padding-top: 5px;
+    padding-bottom: 10px;
+    min-height: 500px;
 
     .allentities-content {
         background-color: #fff;
-        min-height: 500px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 1px rgb(0 0 0 / 5%), 0 2px 4px 1px rgb(0 0 0 / 9%);
+        border-left: 1px solid transparent;
+        border-right: none;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
 
         .entity-title {
+            padding: 2.5% 2%;
+            padding-left: 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            span {
+                font-size: 25px;
+                font-weight: 500;
+            }
 
             .input-box {
                 min-width: 25%;
@@ -93,7 +117,7 @@ onMounted(() => {
                 .search-icon {
                     display: block;
                     height: 100%;
-                    width: 5%;
+                    width: 8%;
                     z-index: 1;
                     border-top-left-radius: 30px;
                     border-bottom-left-radius: 30px;
@@ -124,21 +148,73 @@ onMounted(() => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 50px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
 
-            .id {
-                width: 10%;
+            &:hover:not(.item-header) {
+                background-color: #f5f5f5;
+
             }
 
-            .name {}
+            &:last-child {
+                border: none;
+            }
+
+            .id {
+                padding-left: 10%;
+                width: 25%;
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                &::after {
+                    content: "";
+                    display: block;
+                    height: 25px;
+                    position: absolute;
+                    right: 35%;
+                    width: 3px;
+                    background-color: rgba(60, 59, 59, .5);
+                }
+            }
+
+            .name {
+                flex-grow: 1;
+            }
 
             .action {
-                width: 10%;
+                width: 18%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                padding-left: 5%;
+
+                &::before {
+                    content: "";
+                    display: block;
+                    height: 25px;
+                    position: absolute;
+                    left: -10%;
+                    width: 3px;
+                    background-color: rgba(60, 59, 59, .5);
+                }
             }
         }
 
         .item-header {
-            background-color: #bfa;
-            height: 60px;
+            // background-color: rgb(97, 219, 240);
+            background-color: #8EC5FC;
+            background-image: linear-gradient(62deg, #E0C3FC 0%, #8EC5FC 100%);
+            height: 80px;
+            font-size: 20px;
+
+            .id::after {
+                display: none;
+            }
+
+            .action::before {
+                display: none;
+            }
         }
     }
 }

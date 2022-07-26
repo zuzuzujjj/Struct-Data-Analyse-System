@@ -35,13 +35,14 @@
   <!-- 内容展示区 -->
   <div class="content-warpper">
     <!-- 没搜索时显示这个 -->
-    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
+    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch" ref=""></NotSearch>
     <!-- 多个实体型表 -->
-    <AllEntity v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity"></AllEntity>
+    <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity" ref="">
+    </ManyEnitiy>
     <!-- 搜索了时显示搜索内容 -->
-    <OnSearch v-if="searchState.isSearched"></OnSearch>
+    <OnSearch v-if="searchState.isSearched" ref=""></OnSearch>
     <!-- 404-notfound -->
-    <div class="no-entity" v-if="searchState.isNotEntity">
+    <div class="no-entity" v-if="searchState.isNotEntity" ref="">
       404 没找到！
     </div>
   </div>
@@ -68,7 +69,7 @@
 import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
 import OnSearch from './components/OnSearch/index.vue'
-import AllEntity from './components/OnSearch/AllEntity.vue'
+import ManyEnitiy from './components/ManyEnitiy/index.vue'
 //vue
 import { ref, reactive, provide, watch, onMounted } from 'vue'
 //hook
@@ -81,7 +82,6 @@ let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑'
 let allEntity = reactive<{ allEntity: string[] }>({ allEntity: [] })
 //当前实体型
 let currentEntity = ref<string>('')
-
 //管理是否搜索、搜索结果的状态机
 let searchState = reactive<{
   isNotSearch: boolean;
@@ -93,11 +93,6 @@ let searchState = reactive<{
   isManyEntity: false, //是否有多个实体型
   isSearched: false, //是否得到单实体型数据
   isNotEntity: false //是否没查找到此实体
-})
-
-onMounted(()=>{
-  console.log(allEntity);
-  
 })
 //初始化默认节点
 let nodes: node[] = [
@@ -124,11 +119,14 @@ let edges: edge[] = [
 let searchData = useGraphData(nodes, edges)
 //为后续组件提供内容
 provide('searchData', searchData)
-
+//滑动组件至视口
+const toViewPoint=()=>{
+  
+}
 //动态更改节点、请求数据
 const getSearchEntity = async () => {
   //清空上一次的currentNode
-  currentEntity.value=''
+  currentEntity.value = ''
   //搜索为空，展示主页
   if (inputSearch.value == '') {
     searchState.isManyEntity = false
@@ -161,11 +159,13 @@ const getSearchEntity = async () => {
     searchState.isNotEntity = true
     searchState.isSearched = false
   }
+  //向下滑动至视口可视区域
+
 }
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
   //为空时不搜索
-  if(currentEntity.value===''){return}
+  if (currentEntity.value === '') { return }
   console.log('获取实体数据');
   let { nodes, edges } = await useGetEntityData(currentEntity.value)
   searchData.nodes = nodes

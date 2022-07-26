@@ -35,11 +35,12 @@ const reDraw = () => {
         clearTimeout(internalID);
         internalID = setTimeout(
             () => {
-                console.log('尺寸改变');
+                console.log('窗口尺寸改变');
                 if (!currentNode.value || !currentNode.value.scrollWidth || !currentNode.value.scrollHeight) return;
                 graph.destroy()
                 graph = useGraph(currentNode, props)
                 drawGraph(graph)
+                console.log('重新渲染');
             }
             , 1000)
     }
