@@ -39,7 +39,7 @@
     <!-- 多个实体型表 -->
     <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity"></ManyEnitiy>
     <!-- 搜索了时显示搜索内容 -->
-    <OnSearch v-if="searchState.isSearched"></OnSearch>
+    <OnSearch v-if="searchState.isSearched" :currentEntity="currentEntity"></OnSearch>
     <!-- 404-notfound -->
     <NotEntity v-if="searchState.isNotEntity"></NotEntity>
   </div>
@@ -306,6 +306,7 @@ const setinputSearch = (value: any) => {
 // 内容展示区css
 .content-warpper {
   background-color: #f7f7f7;
+  height:100%;
 }
 
 .footer-warpper {
