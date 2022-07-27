@@ -77,7 +77,7 @@ onMounted(() => {
     padding: 0 4.5%;
     padding-top: 5px;
     padding-bottom: 10px;
-    min-height: 500px;
+    min-height: 550px;
 
     .allentities-content {
         background-color: #fff;

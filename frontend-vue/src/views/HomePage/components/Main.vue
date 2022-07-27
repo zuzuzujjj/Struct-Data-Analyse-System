@@ -60,7 +60,7 @@
                 <img class="sport-element" src="../image/sportelement/rightbottom.svg" alt="">
                 <img class="sport-element" src="../image/sportelement/righttop.svg" alt="">
                 <!-- 主图 -->
-                <img class="img-show" src="../image/p2.png" alt="">
+                <img class="img-show" src="../image/twoimage/足球1.jpg" alt="">
               </div>
             </div>
           </div>
@@ -190,9 +190,7 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 const navigate = useRouter()
 
 onMounted(() => {
-  setTimeout(() => {
-    state.timeInter = <any>setInterval(pictureTimer, state.timeActive)
-  }, state.timeActive)
+  state.timeInter = <any>setInterval(pictureTimer, state.timeActive)
 })
 onUnmounted(() => {
   clearInterval(state.timeInter)
@@ -406,6 +404,7 @@ let isActiveAbility = ref<number>(0)
           //主图
           .img-show {
             width: 100%;
+            object-fit: cover;
           }
 
           //四角元素

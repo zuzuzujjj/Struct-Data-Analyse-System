@@ -107,16 +107,6 @@ const currentPath: string =router.path
 
     .search {
       margin-right: 50px;
-
-      .el-input {
-        &:hover {
-          border: 1px solid @menusColor;
-        }
-
-        & .is-focus {
-          border: 1px solid @menusColor;
-        }
-      }
     }
 
     .menus {

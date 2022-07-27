@@ -33,18 +33,15 @@
     </div>
   </div>
   <!-- 内容展示区 -->
-  <div class="content-warpper">
+  <div class="content-warpper" ref="currentShowComponent">
     <!-- 没搜索时显示这个 -->
-    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch" ref=""></NotSearch>
+    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
     <!-- 多个实体型表 -->
-    <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity" ref="">
-    </ManyEnitiy>
+    <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity"></ManyEnitiy>
     <!-- 搜索了时显示搜索内容 -->
-    <OnSearch v-if="searchState.isSearched" ref=""></OnSearch>
+    <OnSearch v-if="searchState.isSearched"></OnSearch>
     <!-- 404-notfound -->
-    <div class="no-entity" v-if="searchState.isNotEntity" ref="">
-      404 没找到！
-    </div>
+    <NotEntity v-if="searchState.isNotEntity"></NotEntity>
   </div>
   <!-- 底部footer -->
   <footer class="footer-warpper">
@@ -70,14 +67,15 @@ import Header from '@/components/Header/index.vue'
 import NotSearch from './components/NotSearch/index.vue'
 import OnSearch from './components/OnSearch/index.vue'
 import ManyEnitiy from './components/ManyEnitiy/index.vue'
+import NotEntity from './components/NotEntity/index.vue'
 //vue
-import { ref, reactive, provide, watch, onMounted } from 'vue'
+import { ref, reactive, provide, watch, onMounted, nextTick } from 'vue'
 //hook
 import useGraphData, { edge, node } from '@/hooks/useGraphData'
 import { useGetEntity, useGetEntityData } from '@/hooks/useGetData'
 //输入逻辑块
 let inputSearch = ref<string | number>('')
-let inputExample = reactive<string[]>(['李白', '肚皮', '白居易', '笑笑', '苦苦', '修行子', '列书', '永生'])
+let inputExample = reactive<string[]>(['梅西', '内马尔', '马拉多纳', '罗纳尔多', '贝克汉姆', '贝利', '安德雷斯', '韦恩'])
 //所有实体型数组
 let allEntity = reactive<{ allEntity: string[] }>({ allEntity: [] })
 //当前实体型
@@ -119,10 +117,8 @@ let edges: edge[] = [
 let searchData = useGraphData(nodes, edges)
 //为后续组件提供内容
 provide('searchData', searchData)
-//滑动组件至视口
-const toViewPoint=()=>{
-  
-}
+//n内容展示区ref
+const currentShowComponent = ref<Element>()
 //动态更改节点、请求数据
 const getSearchEntity = async () => {
   //清空上一次的currentNode
@@ -160,7 +156,7 @@ const getSearchEntity = async () => {
     searchState.isSearched = false
   }
   //向下滑动至视口可视区域
-
+  currentShowComponent.value?.scrollIntoView()
 }
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
@@ -302,6 +298,7 @@ const setinputSearch = (value: any) => {
       margin-left: 5px;
       margin-top: 5px;
       line-height: 30px;
+      padding: 0 5px;
     }
   }
 }

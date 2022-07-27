@@ -93,11 +93,11 @@ const quickToUse = () => {
 //第三部分渲染数据
 const keywordSearch = [
   {
-    searchName: '霹雳无敌祖靖霄',
+    searchName: '里瓦尔多',
     searchType: '人物'
   },
   {
-    searchName: '韩哥牛逼韩仕海',
+    searchName: '法布雷加斯',
     searchType: '人物'
   },
   {
@@ -105,24 +105,24 @@ const keywordSearch = [
     searchType: '事件'
   },
   {
-    searchName: '我什么时候暴富',
-    searchType: '做梦'
+    searchName: '英超 第1轮',
+    searchType: '比赛'
   },
   {
-    searchName: '我什么时候暴富',
-    searchType: '做梦'
+    searchName: '英超 第1轮',
+    searchType: '比赛'
   },
   {
-    searchName: '我什么时候暴富',
-    searchType: '做梦'
+    searchName: '英超 第1轮',
+    searchType: '比赛'
   },
   {
-    searchName: '我什么时候暴富',
-    searchType: '做梦'
+    searchName: '英超 第1轮',
+    searchType: '比赛'
   },
   {
-    searchName: '我什么时候暴富',
-    searchType: '做梦'
+    searchName: '英超 第1轮',
+    searchType: '比赛'
   },
 ]
 const emit = defineEmits<{
