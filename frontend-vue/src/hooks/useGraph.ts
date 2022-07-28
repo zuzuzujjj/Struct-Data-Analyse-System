@@ -1,5 +1,9 @@
 import G6, { Graph, GraphData, Item } from '@antv/g6'
 
+/**
+ * @des 返回图实例对象
+ * @returns 图实例对象
+ */
 export default (currentNode: any, props: any) => {
     //全局动画配置
     const animateCfg = { duration: 200, easing: 'easeCubic' }
