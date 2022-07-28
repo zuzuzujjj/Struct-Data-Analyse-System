@@ -74,13 +74,12 @@ import { ref, reactive, provide, watch, onMounted, nextTick } from 'vue'
 //hook
 import useGraphData, { edge, node } from '@/hooks/useGraphData'
 import { useGetEntity, useGetEntityData } from '@/hooks/useGetData'
+
 //输入逻辑块
 let inputSearch = ref<string | number>('')
 let inputExample = reactive<string[]>(['梅西', '内马尔', '马拉多纳', '罗纳尔多', '贝克汉姆', '贝利', '安德雷斯', '韦恩'])
-//所有实体型数组
-let allEntity = reactive<{ allEntity: string[] }>({ allEntity: [] })
-//当前实体型
-let currentEntity = ref<string>('')
+
+
 //管理是否搜索、搜索结果的状态机
 let searchState = reactive<{
   isNotSearch: boolean;
@@ -93,7 +92,8 @@ let searchState = reactive<{
   isSearched: false, //是否得到单实体型数据
   isNotEntity: false //是否没查找到此实体
 })
-//初始化默认节点
+
+//初始化默认节点数据
 let nodes: node[] = [
   {
     id: 'node1', // String，该节点存在则必须，节点的唯一标识
@@ -114,15 +114,22 @@ let edges: edge[] = [
     target: 'node2', // String，必须，目标点 id
   },
 ]
-//搜索节点数据
+//graph图数据
 let searchData = useGraphData(nodes, edges)
 //为后续组件提供内容
 provide('searchData', searchData)
-//n内容展示区ref
+
+//内容展示区ref
 const currentShowComponent = ref<Element>()
 const toComponentView = () => {
   currentShowComponent.value?.scrollIntoView(true)
 }
+
+//所有实体型数组
+let allEntity = reactive<{ allEntity: string[] }>({ allEntity: [] })
+//当前实体型
+let currentEntity = ref<string>('')
+
 //动态更改节点、请求数据
 const getSearchEntity = async () => {
   //清空上一次的currentNode
@@ -184,7 +191,7 @@ const getEntityData = async () => {
     searchState.isNotEntity = false
   }
   //滚动一下屏幕,nexTick处理当输入单实体时,组件的高度在一瞬间为0
-  nextTick(()=>{
+  nextTick(() => {
     toComponentView()
   })
   console.log('4、获得数据结束');
