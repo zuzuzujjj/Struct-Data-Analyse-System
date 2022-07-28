@@ -37,7 +37,8 @@
     <!-- 没搜索时显示这个 -->
     <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
     <!-- 多个实体型表 -->
-    <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity"></ManyEnitiy>
+    <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity">
+    </ManyEnitiy>
     <!-- 搜索了时显示搜索内容 -->
     <OnSearch v-if="searchState.isSearched" :currentEntity="currentEntity"></OnSearch>
     <!-- 404-notfound -->
@@ -119,6 +120,9 @@ let searchData = useGraphData(nodes, edges)
 provide('searchData', searchData)
 //n内容展示区ref
 const currentShowComponent = ref<Element>()
+const toComponentView = () => {
+  currentShowComponent.value?.scrollIntoView(true)
+}
 //动态更改节点、请求数据
 const getSearchEntity = async () => {
   //清空上一次的currentNode
@@ -156,7 +160,7 @@ const getSearchEntity = async () => {
     searchState.isSearched = false
   }
   //向下滑动至视口可视区域
-  currentShowComponent.value?.scrollIntoView()
+  toComponentView()
 }
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
@@ -166,6 +170,8 @@ const getEntityData = async () => {
   let { nodes, edges } = await useGetEntityData(currentEntity.value)
   searchData.nodes = nodes
   searchData.edges = edges
+  //滚动一下屏幕
+   toComponentView()
   //展示onsearch
   //单体
   if (nodes.length === 1) {
@@ -306,7 +312,7 @@ const setinputSearch = (value: any) => {
 // 内容展示区css
 .content-warpper {
   background-color: #f7f7f7;
-  height:100%;
+  height: 100%;
 }
 
 .footer-warpper {
