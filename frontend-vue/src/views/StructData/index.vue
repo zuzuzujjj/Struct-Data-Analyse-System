@@ -35,7 +35,7 @@
   <!-- 内容展示区 -->
   <div class="content-warpper" ref="currentShowComponent">
     <!-- 没搜索时显示这个 -->
-    <NotSearch v-if="searchState.isNotSearch" @setinputSearch="setinputSearch"></NotSearch>
+    <NotSearch v-if="searchState.isNotSearch" v-model:inputSearch="inputSearch"></NotSearch>
     <!-- 多个实体型表 -->
     <ManyEnitiy v-if="searchState.isManyEntity" :allEntity="allEntity" v-model:currentEntity="currentEntity">
     </ManyEnitiy>
@@ -136,7 +136,7 @@ const getSearchEntity = async () => {
     return
   }
   let temp: any = await useGetEntity(inputSearch.value)
-  console.log('所有实体型为:', temp);
+  console.log('1、所有实体型为:', temp);
 
   //隐藏notsearch
   searchState.isNotSearch = false
@@ -161,17 +161,16 @@ const getSearchEntity = async () => {
   }
   //向下滑动至视口可视区域
   toComponentView()
+  console.log('2、获得实体结束');
 }
 //获取数据，并赋值给searchData
 const getEntityData = async () => {
   //为空时不搜索
   if (currentEntity.value === '') { return }
-  console.log('获取实体数据');
+  console.log('3、获取实体数据');
   let { nodes, edges } = await useGetEntityData(currentEntity.value)
   searchData.nodes = nodes
   searchData.edges = edges
-  //滚动一下屏幕
-   toComponentView()
   //展示onsearch
   //单体
   if (nodes.length === 1) {
@@ -184,15 +183,15 @@ const getEntityData = async () => {
     searchState.isSearched = true
     searchState.isNotEntity = false
   }
+  //滚动一下屏幕,nexTick处理当输入单实体时,组件的高度在一瞬间为0
+  nextTick(()=>{
+    toComponentView()
+  })
+  console.log('4、获得数据结束');
 }
 //监视currentEntity
 watch(currentEntity, getEntityData)
 
-//第三部分热搜词回调
-const setinputSearch = (value: any) => {
-  inputSearch.value = value
-  window.scrollTo(0, 0)
-}
 </script>
  
 <style scoped lang="less">
@@ -313,6 +312,7 @@ const setinputSearch = (value: any) => {
 .content-warpper {
   background-color: #f7f7f7;
   height: 100%;
+  min-height: 500px;
 }
 
 .footer-warpper {

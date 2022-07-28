@@ -3,25 +3,25 @@
     <div class="onsearch-content">
       <div class="graph-content">
         <!-- 标题 -->
-        <div class="title-show">
+        <div class="title-show animate__animated animate__fadeInLeft">
           {{ currentEntity }}
         </div>
         <!-- 图 -->
-        <div class="graph-show">
+        <div class="graph-show animate__animated animate__fadeInLeft">
           <std-graph :data="defaultData" :plugins="['minimap']" :minimapszie="[150, 100]"></std-graph>
         </div>
         <!-- 数据 -->
-        <div class="entity-data-show">
+        <div class="entity-data-show animate__animated animate__fadeInLeft">
         </div>
       </div>
       <div class="right-warpper">
-        <div class="title-menus">
+        <div class="title-menus animate__animated animate__fadeInRight">
           标题
         </div>
-        <div class="menus-1">
+        <div class="menus-1 animate__animated animate__fadeInRight">
           菜单一
         </div>
-        <div class="menus-2">
+        <div class="menus-2 animate__animated animate__fadeInRight">
           菜单二
         </div>
       </div>

@@ -45,7 +45,7 @@
     <div class="keyword-warpper">
       <div class="keyword-container">
         <div class="keyword-item" v-for="(item, index) in keywordSearch" :key="index"
-          @click="emit('setinputSearch', item.searchName)">
+          @click="setInputSearch(item.searchName)">
           <span class="searchName">{{ item.searchName }}</span>
           <span class="searchType">{{ item.searchType }}</span>
         </div>
@@ -56,7 +56,7 @@
  
  
 <script lang='ts' setup>
-import { ref, reactive, onMounted,inject,watch } from 'vue'
+import { ref, reactive, onMounted, inject, watch } from 'vue'
 import StdGraph from '@/components/StdGraph/index.vue'
 import useGraphData from '@/hooks/useGraphData'
 import Card from './Card.vue'
@@ -91,6 +91,9 @@ const quickToUse = () => {
 }
 
 //第三部分渲染数据
+const emit = defineEmits<{
+  (event: 'update:inputSearch', value: string): void
+}>()
 const keywordSearch = [
   {
     searchName: '里瓦尔多',
@@ -125,9 +128,10 @@ const keywordSearch = [
     searchType: '比赛'
   },
 ]
-const emit = defineEmits<{
-  (event: 'setinputSearch', value: any): void
-}>()
+const setInputSearch=(value:string)=>{
+  emit('update:inputSearch', value)
+  window.scrollTo(0,0)
+}
 </script>
  
 <style scoped lang='less'>
