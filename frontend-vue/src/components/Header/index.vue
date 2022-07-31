@@ -18,7 +18,7 @@
         <ul class="menus">
           <li :class="currentPath === '/' ? 'isCurrent' : ''" @click="navigate.push('/')"><span>首页</span></li>
           <li :class="currentPath === '/struct-data' ? 'isCurrent' : ''" @click="navigate.push('/struct-data')"><span>数据知识图谱</span></li>
-          <li :class="currentPath === '/data-analysis' ? 'isCurrent' : ''" @click="navigate.push('/data-analysis')"><span>数据分析</span></li>
+          <li :class="currentPath === '/data-analysis' ? 'isCurrent' : ''" @click="navigate.push('/data-analysis')"><span>数据标注</span></li>
           <li :class="currentPath === '/document' ? 'isCurrent' : ''" @click="navigate.push('/document')"><span>文档</span></li>
           <li class="top-right-container">
             <a href="https://github.com/suanzi-yi/Struct-Data-Analyse-System.git" target="_blank">

@@ -11,7 +11,12 @@ const reader = new FileReader()
  */
 export const useFileReader = (file: any, handleOnload: handleOnloadHook, method: methods = 'readAsText') => {
     reader.onload = e => {
-        handleOnload(e.target?.result)
+        let result = e.target?.result as string;
+        let r: string[] = []
+        result.split('\r\n').map((value, index) => {
+            r.push(value)
+        })
+        handleOnload(r)
     }
     reader[method](file)
 
