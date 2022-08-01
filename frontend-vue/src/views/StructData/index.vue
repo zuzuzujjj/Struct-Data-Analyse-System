@@ -205,7 +205,7 @@ watch(currentEntity, getEntityData)
 .top-container {
   background-color: #B721FF;
   background-image: linear-gradient(31deg, #d7a4ef 22%, #21D4FD 52%, #ffffff 86%);
-
+  height:100vh;
 }
 
 .input-warpper {

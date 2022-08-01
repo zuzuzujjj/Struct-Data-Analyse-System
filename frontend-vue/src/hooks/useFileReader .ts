@@ -1,5 +1,5 @@
 type methods = 'readAsBinaryString' | 'readAsDataURL' | 'readAsText'
-type handleOnloadHook = (result: any) => void
+type handleOnloadHook = (result: string[]) => void
 
 const reader = new FileReader()
 /**
