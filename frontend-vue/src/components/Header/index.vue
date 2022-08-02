@@ -3,7 +3,7 @@
     <div class="top-container">
       <div class="top-left-container">
         <a href="">
-          <img src="../../assets/logo/logo2.png" alt="logo">
+          <img src="../../assets/logo/logo.png" alt="logo">
         </a>
         <span>
         </span>
@@ -94,7 +94,7 @@ const currentPath: string =router.path
     &>h2 {
       font-size: 18px;
       margin: 0;
-      color: black;
+      color: #fff;
       white-space: nowrap;
     }
   }
