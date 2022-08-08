@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="content-warpper">
-      
+      <div class="card-warpper">
+        
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +22,6 @@ import { ref,reactive } from 'vue'
   background-color: #fff;
 }
 .content-warpper{
-
+  padding:0 4.5%;
 }
 </style>

@@ -33,17 +33,22 @@
   </main>
   <!-- 底部footer -->
   <footer class="footer-warpper">
-
+    {{ fileContent }}
   </footer>
 </template>
  
  
 <script lang='ts' setup>
 import Header from '@/components/Header/index.vue'
-import  NotUpload from './components/NotUpload/index.vue'
+import NotUpload from './components/NotUpload/index.vue'
 import OnUpload from './components/OnUpload/index.vue'
 import { ref, reactive, onMounted, nextTick, watch } from 'vue'
 import { useFileReader } from '@/hooks/useFileReader '
+import { useStructData } from '@/store'
+/**
+ * useStructData 存储管理库
+ */
+const dataStore = useStructData()
 /**
  * 上传功能
  */
@@ -62,9 +67,16 @@ const loadTextFromFile = (e: any) => {
   if (!file) return;
   fileName.value = file.name
   useFileReader(file, (r: string[]) => { fileContent.value = r })
-  isUpoladFile.value= true
+  isUpoladFile.value = true
 }
-
+//向store中添加数据
+watch(fileName, () => {
+  dataStore.uploadDataName(fileName.value as string)
+})
+watch(fileContent, () => {
+  dataStore.uploadDataEntity(fileContent.value as string[])
+  console.log('store', dataStore.dataName, dataStore.dataEntity);
+})
 /**
  * 管理是否搜索
  */
@@ -127,11 +139,13 @@ const isUpoladFile = ref<boolean>(false)
         height: 45px;
         border-radius: 45px;
         margin-right: 5%;
-        color:#000;
+        color: #000;
+
         &:nth-child(1) {
           border: none;
           background-color: #00CFFF;
           opacity: 1;
+
           &:hover {
             opacity: .8;
           }
@@ -153,7 +167,7 @@ const isUpoladFile = ref<boolean>(false)
   }
 }
 
-.footer-warpper{
+.footer-warpper {
   min-height: 500px;
   width: 100%;
 }

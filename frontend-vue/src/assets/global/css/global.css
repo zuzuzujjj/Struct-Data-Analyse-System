@@ -16,6 +16,7 @@
       ::-webkit-scrollbar-track-piece {
           /*内层轨道，滚动条中间部分（位置4）*/
           background: #f8f9fa;
+          opacity: .1;
       }
 
       ::-webkit-scrollbar-thumb {
