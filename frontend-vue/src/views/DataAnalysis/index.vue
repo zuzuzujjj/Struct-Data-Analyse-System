@@ -31,10 +31,6 @@
     <NotUpload v-if="!isUpoladFile"></NotUpload>
     <OnUpload v-if="isUpoladFile"></OnUpload>
   </main>
-  <!-- 底部footer -->
-  <footer class="footer-warpper">
-    {{ fileContent }}
-  </footer>
 </template>
  
  
@@ -167,8 +163,5 @@ const isUpoladFile = ref<boolean>(false)
   }
 }
 
-.footer-warpper {
-  min-height: 500px;
-  width: 100%;
-}
+
 </style>
