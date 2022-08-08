@@ -318,7 +318,7 @@ watch(currentEntity, getEntityData)
 // 内容展示区css
 .content-warpper {
   background-color: #f7f7f7;
-  height: 100%;
+  // height: 100%;
   min-height: 500px;
 }
 

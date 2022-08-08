@@ -1,5 +1,4 @@
 import G6, { Graph, GraphData, Item } from '@antv/g6'
-
 /**
  * @des 返回图实例对象
  * @returns 图实例对象
