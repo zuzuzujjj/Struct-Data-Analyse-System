@@ -38,9 +38,10 @@
 import Header from '@/components/Header/index.vue'
 import NotUpload from './components/NotUpload/index.vue'
 import OnUpload from './components/OnUpload/index.vue'
-import { ref, reactive, onMounted, nextTick, watch } from 'vue'
+import { ref, reactive, onMounted, nextTick, watch, provide } from 'vue'
 import { useFileReader } from '@/hooks/useFileReader '
 import { useStructData } from '@/store'
+import { node } from '@/hooks/useGraphData'
 /**
  * useStructData 存储管理库
  */
@@ -49,34 +50,29 @@ const dataStore = useStructData()
  * 上传功能
  */
 const uploadRef = ref<HTMLElement>()
-//点击上传
-const toUpoladFile = () => {
+const toUpoladFile = () => { //点击上传
   uploadRef.value?.click()
 }
-//文本内容
-let fileContent = ref<string[]>([])
-//文本名字
-let fileName = ref<string>()
-//读取文件内容
-const loadTextFromFile = (e: any) => {
+let fileContent = ref<node[]>([]) //文本内容
+let fileName = ref<string>() //文本名字
+const loadTextFromFile = (e: any) => { //读取文件内容
   const file = e.target?.files[0];
   if (!file) return;
   fileName.value = file.name
-  useFileReader(file, (r: string[]) => { fileContent.value = r })
-  isUpoladFile.value = true
+  useFileReader(file, (r: node[]) => { fileContent.value = r })
 }
 //向store中添加数据
 watch(fileName, () => {
-  dataStore.uploadDataName(fileName.value as string)
+  dataStore.addDataName(fileName.value as string)
 })
 watch(fileContent, () => {
-  dataStore.uploadDataEntity(fileContent.value as string[])
-  console.log('store', dataStore.dataName, dataStore.dataEntity);
+  dataStore.addDataEntity(fileContent.value)
+  dataStore.addDataEdge([]) //添加空数组占位 
+  isUpoladFile.value=true
 })
-/**
- * 管理是否搜索
- */
-const isUpoladFile = ref<boolean>(false)
+
+
+const isUpoladFile = ref<boolean>(false)  //是否搜索
 
 </script>
  
@@ -162,6 +158,4 @@ const isUpoladFile = ref<boolean>(false)
     }
   }
 }
-
-
 </style>

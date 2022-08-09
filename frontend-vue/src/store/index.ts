@@ -1,3 +1,4 @@
+import { node ,edge} from "@/hooks/useGraphData";
 import { defineStore } from "pinia" // 定义容器
 
 export const useStructData = defineStore('useStructData', {
@@ -8,25 +9,23 @@ export const useStructData = defineStore('useStructData', {
   */
   state: () => {
     return {
-      dataName: [] as string[],
-      dataEntity: [] as string[][],
+      dataName: [] as string[], // name of the file name
+      dataEntity: [] as node[][], // data of the entities
+      dataEdge: [] as edge[][] //data of the edges
     }
   },
-  /**
-   * 用来封装计算属性 有缓存功能  类似于computed
-   */
   getters: {
 
   },
-  /**
-   * 编辑业务逻辑  类似于methods
-   */
   actions: {
-    uploadDataName(name: string|number){
+    addDataName(name: string|number){
       this.dataName.push(name as string);
     },
-    uploadDataEntity(content:string[]){
-      this.dataEntity.push(content)
+    addDataEntity(entity:node[]){
+      this.dataEntity.push(entity)
+    },
+    addDataEdge(edge:edge[]){
+      this.dataEdge.push(edge)
     }
   }
 

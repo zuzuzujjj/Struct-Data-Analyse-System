@@ -12,7 +12,6 @@
           <p class="content">
             赶不过来了，代码写不完了，css写不完了，typescript写不完了。
             赶不过来了，代码写不完了，css写不完了，typescript写不完了。赶不过来了，代码写不完了，css写不完了，typescript写不完了。
-
           </p>
           <!-- 按钮组 -->
           <div class="button-gtoup">
@@ -47,7 +46,6 @@
         </div>
       </div>
     </div>
-    <!--  -->
     <!-- 底部footer -->
     <footer class="footer-warpper">
       <!-- 功能区 -->
