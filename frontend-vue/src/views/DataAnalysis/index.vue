@@ -40,12 +40,12 @@ import NotUpload from './components/NotUpload/index.vue'
 import OnUpload from './components/OnUpload/index.vue'
 import { ref, reactive, onMounted, nextTick, watch, provide } from 'vue'
 import { useFileReader } from '@/hooks/useFileReader '
-import { useStructData } from '@/store'
+import { useAnnotation } from '@/store'
 import { node } from '@/hooks/useGraphData'
 /**
- * useStructData 存储管理库
+ * useAnnotation 文件上传管理库
  */
-const dataStore = useStructData()
+const store = useAnnotation()
 /**
  * 上传功能
  */
@@ -53,21 +53,20 @@ const uploadRef = ref<HTMLElement>()
 const toUpoladFile = () => { //点击上传
   uploadRef.value?.click()
 }
-let fileContent = ref<node[]>([]) //文本内容
 let fileName = ref<string>() //文本名字
+let fileContent = ref<string>() //文本内容
 const loadTextFromFile = (e: any) => { //读取文件内容
   const file = e.target?.files[0];
   if (!file) return;
   fileName.value = file.name
-  useFileReader(file, (r: node[]) => { fileContent.value = r })
+  useFileReader(file, (r: string) => { fileContent.value = r })
 }
 //向store中添加数据
 watch(fileName, () => {
-  dataStore.addDataName(fileName.value as string)
+  store.addFileName(fileName.value as string)
 })
 watch(fileContent, () => {
-  dataStore.addDataEntity(fileContent.value)
-  dataStore.addDataEdge([]) //添加空数组占位 
+  store.addFileNameContent(fileContent.value as string)
   isUpoladFile.value=true
 })
 
