@@ -38,10 +38,10 @@
 import Header from '@/components/Header/index.vue'
 import NotUpload from './components/NotUpload/index.vue'
 import OnUpload from './components/OnUpload/index.vue'
-import { ref, reactive, onMounted, nextTick, watch, provide } from 'vue'
+import { ref, reactive, watch, } from 'vue'
 import { useFileReader } from '@/hooks/useFileReader '
+import { useCreateAnnotationData } from '@/hooks/useCreateAnnotationData'
 import { useAnnotation } from '@/store'
-import { node } from '@/hooks/useGraphData'
 /**
  * useAnnotation 文件上传管理库
  */
@@ -61,13 +61,15 @@ const loadTextFromFile = (e: any) => { //读取文件内容
   fileName.value = file.name
   useFileReader(file, (r: string) => { fileContent.value = r })
 }
+
 //向store中添加数据
 watch(fileName, () => {
   store.addFileName(fileName.value as string)
 })
 watch(fileContent, () => {
   store.addFileNameContent(fileContent.value as string)
-  isUpoladFile.value=true
+  store.addAnnotationData(useCreateAnnotationData(fileContent.value as string))
+  isUpoladFile.value = true
 })
 
 
@@ -80,6 +82,8 @@ const isUpoladFile = ref<boolean>(false)  //是否搜索
   background-color: #0F161C;
   height: 100vh;
 }
+
+
 
 .upload-wapper {
   width: 100%;
@@ -151,10 +155,13 @@ const isUpoladFile = ref<boolean>(false)  //是否搜索
     width: 50%;
 
     img {
-
       width: 85%;
       object-fit: cover;
     }
   }
+}
+
+.content-wapper {
+  min-height: 500px;
 }
 </style>

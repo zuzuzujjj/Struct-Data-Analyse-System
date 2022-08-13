@@ -12,6 +12,7 @@ export const useAnnotation = defineStore('useAnnotation', {
     return {
       fileName: [] as string[], // name of the file name
       fileNameContent: [] as string[], // content of the file
+      annotationData:[] as any[], //annotationData of the annotation
     }
   },
   getters: {
@@ -31,6 +32,13 @@ export const useAnnotation = defineStore('useAnnotation', {
      */
     addFileNameContent(content: string){
       this.fileNameContent.push(content)
+    },
+    /**
+     * 
+     * @param annotationDataObject 传入的annotationData对象
+     */
+    addAnnotationData(annotationDataObject:any){
+      this.annotationData.push(annotationDataObject)
     }
   }
 
