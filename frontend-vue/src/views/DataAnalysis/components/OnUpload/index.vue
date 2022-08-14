@@ -85,11 +85,22 @@
     <!--数据与图展示区域  -->
     <main class="graph-data-warpper">
       <!-- 标注实体统计 -->
-      <section class="data-table" style="height:1000px">
-        {{ store.alReadyAnnotationData[currentIndex] }}
+      <section class="data-table">
+        <el-table :data="store.alReadyAnnotationData[currentIndex]" style="width: 100%" height="400">
+          <el-table-column prop="text" label="实体名称" width="180" />
+          <el-table-column prop="type" label="实体类型" width="180" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </section>
-      <!-- top n tips -->
-      <section class="statistic-top">
+      <!-- 中间图表分析 -->
+      <section class="middle-chart">
+
+      </section>
+      <section class="right-chart">
 
       </section>
     </main>
@@ -225,7 +236,7 @@ onUnmounted(() => {
   document.removeEventListener('keyup', doKeyboard)
 })
 
-//增加label
+//监控userChoosedCategoryId，当用户选择了时，增加label
 watch(() => textSelectedOption.userChoosedCategoryId, () => {
   if (textSelectedOption.userChoosedCategoryId === null || textSelectedOption.currentChoosedEntity == '未选择') {
     //置空
@@ -248,6 +259,14 @@ const doKeyboard = (e: KeyboardEvent) => {
   if (e.key == 'a' || e.key == 'A') textSelectedOption.userChoosedCategoryId = 4;
   if (e.key == 'd' || e.key == 'D') textSelectedOption.userChoosedCategoryId = 5;
   if (e.key == 'f' || e.key == 'F') textSelectedOption.userChoosedCategoryId = 6;
+}
+
+/**
+ * 数据展示功能模块
+ */
+const handleDelete=(index: number,row:{id: number;text: string;type: string})=>{
+  console.log(index,row);
+  removeLabel(row.id)
 }
 </script>
  
@@ -357,6 +376,7 @@ const doKeyboard = (e: KeyboardEvent) => {
         text-align: center;
       }
 
+      //下拉框选择菜单
       .select-menus {
         display: flex;
         height: 60px;
@@ -370,6 +390,7 @@ const doKeyboard = (e: KeyboardEvent) => {
         }
       }
 
+      //快捷方式表
       .short-select {
         height: 310px;
         overflow: auto;
@@ -430,19 +451,27 @@ const doKeyboard = (e: KeyboardEvent) => {
 .graph-data-warpper {
   padding: 0 1%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  height: 500px;
 
   .data-table {
-    width: 70%;
+    width: 35%;
     .card;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     padding: 1%;
   }
 
-  .statistic-top {
-    width: 25%;
+  .middle-chart {
+    width: 20%;
     .card;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  }
+
+  .right-chart {
+    width: 20%;
+    .card;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
   }
 }
 
