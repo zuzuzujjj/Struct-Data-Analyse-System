@@ -6,7 +6,7 @@ type annotationDataType = {
     color: string;
     borderColor: string;
   }[];
-  labels: any[];
+  labels: { id: number; categoryId: number; startIndex: number; endIndex: number }[];
   connectionCategories: {
     id: number;
     text: string;
@@ -29,10 +29,15 @@ export const useAnnotation = defineStore('useAnnotation', {
       fileName: [] as string[], // name of the file name
       fileNameContent: [] as string[], // content of the file
       annotationData: [] as annotationDataType[], //annotationData of the annotation
-      alReadyAnnotationData:[] as string[][], //annotationData of the annotation
+      alReadyAnnotationData: [] as string[][], //annotationData of the annotation
     }
   },
   getters: {
+    /**
+     * 
+     * @param state 
+     * @returns 文件选择菜单
+     */
     getFileIndexSelectOptions(state) {
       let temp: { value: number; label: string }[] = []
       state.fileName.forEach((item, index) => {
@@ -43,18 +48,64 @@ export const useAnnotation = defineStore('useAnnotation', {
       })
       return temp
     },
+    /**
+     * 
+     * @param state 
+     * @returns 实体类型选择菜单
+     */
     getEntityTypeSelectOptions(state) {
       let temp: { value: number; label: string }[] = []
       state.annotationData[0].labelCategories.forEach((item) => {
-        temp.push({
-          value: item.id,
-          label: item.text
-        })
+        switch (item.text) {
+          case "B—LOC":
+            temp.push({
+              value: item.id,
+              label: item.text+'--地点'
+            })
+            break;
+          case "I—LOC":
+            temp.push({
+              value: item.id,
+              label: item.text+'--词的中间'
+            })
+            break;
+          case "B—PER":
+            temp.push({
+              value: item.id,
+              label: item.text+'--人物'
+            })
+            break;
+          case "I—PER":
+            temp.push({
+              value: item.id,
+              label: item.text
+            })
+            break;
+          case "B—ORG":
+            temp.push({
+              value: item.id,
+              label: item.text+'--组织'
+            })
+            break;
+          case "I—ORG":
+            temp.push({
+              value: item.id,
+              label: item.text
+            })
+            break;
+          case "O":
+            temp.push({
+              value: item.id,
+              label: item.text+'--其它'
+            })
+            break;
+        }
+
       })
       return temp
     },
     getCurrentEntityType(state) {
-      return (index:number) => {
+      return (index: number) => {
         return state.annotationData[0].labelCategories[index].text
       }
     }
@@ -86,7 +137,7 @@ export const useAnnotation = defineStore('useAnnotation', {
      * 
      * @param alReadyannotationData 传入的标注实体对象
      */
-    addAlReadyAnnotationData(alReadyannotationData:string[]){
+    addAlReadyAnnotationData(alReadyannotationData: string[]) {
       this.alReadyAnnotationData.push(alReadyannotationData)
     }
   }

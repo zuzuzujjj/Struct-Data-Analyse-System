@@ -5,11 +5,13 @@
       <div class="left-file-select">
         <span>当前标注文件:</span>
         <el-select v-model="currentIndex" class="m-2" placeholder="Select">
-          <el-option v-for="item in store.getFileIndexSelectOptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in store.getFileIndexSelectOptions" :key="item.value" :label="item.label"
+            :value="item.value" />
         </el-select>
       </div>
       <div class="right-data-select">
-        <el-button type="primary" round @click="showAlReadyAnnotationData">查看已标注数据</el-button>
+        <el-button type="primary" round @click="downLoadAlReadyAnnotationData">导出标注数据</el-button>
+        <el-button type="primary" round>生成知识图谱</el-button>
       </div>
     </div>
     <!-- 标注内容区域 -->
@@ -24,7 +26,7 @@
         <!-- 统计信息 -->
         <div class="top-info">
           <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
-          <span>关系数<div class="info-data">{{store.annotationData[currentIndex].connections.length }}</div></span>
+          <span>关系数<div class="info-data">{{ store.annotationData[currentIndex].connections.length }}</div></span>
         </div>
         <!-- 增加实体型 -->
         <div class="add-entity">
@@ -35,26 +37,46 @@
             <span>实体类型菜单：</span>
             <el-select v-model="textSelectedOption.userChoosedCategoryId" class="m-2" placeholder="请选择标注实体型"
               size="large">
-              <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label" :value="item.value" />
+              <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label"
+                :value="item.value" />
             </el-select>
           </div>
           <!-- 快捷方式表 -->
           <div class="short-select">
-            <span>键盘快捷方式</span>
+            <span class="short-title">键盘快捷方式</span>
             <ul class="key-list">
-              <li class="key-item">1</li>
-              <li class="key-item">2</li>
-              <li class="key-item">3</li>
-              <li class="key-item">4</li>
-              <li class="key-item">5</li>
-              <li class="key-item">6</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
-              <li class="key-item">7</li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/mouseR.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">删除实体</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/Q_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—LOC--地点</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/W_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—LOC--词的中间</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/E_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—PER--人物</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/R_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—PER</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/A_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—ORG--组织</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/D_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—ORG</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/F_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">O--其它</el-tag>
+              </li>
             </ul>
           </div>
         </div>
@@ -64,7 +86,7 @@
     <main class="graph-data-warpper">
       <!-- 标注实体统计 -->
       <section class="data-table" style="height:1000px">
-
+        {{ store.alReadyAnnotationData[currentIndex] }}
       </section>
       <!-- top n tips -->
       <section class="statistic-top">
@@ -80,6 +102,7 @@ import { ref, reactive, watch, onMounted, onUnmounted } from 'vue'
 import { useAnnotation } from '@/store'
 import { Annotator, Action } from 'poplar-annotation'
 import { useMousePosition } from '@/hooks/useMousePosition'
+import { useDownloadEntity } from '@/hooks/useDownloadEntity'
 /**
  * 切换文件模块
  */
@@ -99,9 +122,8 @@ watch(currentIndex, () => {
 /**
  * 顶部功能区模块
  */
-const showAlReadyAnnotationData=()=>{
-  console.log(store.alReadyAnnotationData[currentIndex.value]);
-  
+const downLoadAlReadyAnnotationData = () => {
+  useDownloadEntity(store.alReadyAnnotationData[currentIndex.value], store.fileName[currentIndex.value] + '-do')
 }
 /**
  * useAnnotation 数据标注模块
@@ -128,9 +150,17 @@ const registerAnnotator = () => {
     textSelectedOption.endIndex = endIndex
     textSelectedOption.currentChoosedEntity = currentAnnotationData.content.slice(startIndex, endIndex)
   })
+  //右键点击时
+  annotator.on('labelRightClicked', (id: number) => {
+    // 输出用户点击的label的ID
+    removeLabel(id)
+  });
 }
 /**
- * 增加标签
+ * 
+ * @param userChoosedCategoryId 用户选择ID
+ * @param startIndex 开始索引
+ * @param endIndex 结束索引
  */
 const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: number) => {
   annotator.applyAction(Action.Label.Create(userChoosedCategoryId, startIndex, endIndex));
@@ -142,6 +172,25 @@ const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: n
   //置空
   textSelectedOption.userChoosedCategoryId = null
   textSelectedOption.currentChoosedEntity = '未选择'
+}
+/**
+ * 
+ * @param id 删除id
+ */
+const removeLabel = (id: number) => {
+  let idIndex: number = 0
+  for (let i = 0; i <= currentAnnotationData.labels.length; i++) {
+    if (id === currentAnnotationData.labels[i].id) {
+      idIndex = i
+      break
+    }
+  }
+  //更新已标注的状态数据
+  store.alReadyAnnotationData[currentIndex.value].splice(idIndex, 1)
+  annotator.applyAction(Action.Label.Delete(id));
+  //更新状态库
+  currentAnnotationData.labels = annotator.store.json.labels
+  currentAnnotationData.connections = annotator.store.json.connections
 }
 /**
  * 增加关系
@@ -188,7 +237,13 @@ let { y } = useMousePosition()
 const doKeyboard = (e: KeyboardEvent) => {
   let top = annotationComponentRef.value?.getBoundingClientRect().top ?? 100
   if (y.value - top <= 80) return;
-  if (e.key == 's') textSelectedOption.userChoosedCategoryId = 0;
+  if (e.key == 'q' || e.key == 'Q') textSelectedOption.userChoosedCategoryId = 0;
+  if (e.key == 'w' || e.key == 'W') textSelectedOption.userChoosedCategoryId = 1;
+  if (e.key == 'e' || e.key == 'E') textSelectedOption.userChoosedCategoryId = 2;
+  if (e.key == 'r' || e.key == 'R') textSelectedOption.userChoosedCategoryId = 3;
+  if (e.key == 'a' || e.key == 'A') textSelectedOption.userChoosedCategoryId = 4;
+  if (e.key == 'd' || e.key == 'D') textSelectedOption.userChoosedCategoryId = 5;
+  if (e.key == 'f' || e.key == 'F') textSelectedOption.userChoosedCategoryId = 6;
 }
 </script>
  
@@ -212,6 +267,17 @@ const doKeyboard = (e: KeyboardEvent) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .left-file-select {
+      margin-left: 2%;
+      span{
+        margin-right:15px;
+      }
+    }
+
+    .right-data-select {
+      margin-right: 2%;
+    }
   }
 }
 
@@ -259,9 +325,11 @@ const doKeyboard = (e: KeyboardEvent) => {
       text-align: center;
 
       span {
-        height: 100%;
+        height: 80%;
         width: 50%;
         position: relative;
+        margin-top: 10px;
+        box-sizing: content-box;
 
         .info-data {
           display: inline;
@@ -301,12 +369,13 @@ const doKeyboard = (e: KeyboardEvent) => {
         height: 310px;
         overflow: auto;
 
-        span {
+        .short-title {
           display: block;
           width: 100%;
           height: 60px;
           line-height: 60px;
           text-align: center;
+          border-bottom: 1px dashed #ccc;
         }
 
         .key-list {
@@ -322,10 +391,25 @@ const doKeyboard = (e: KeyboardEvent) => {
             border-bottom: 1px solid #ccc;
             border-right: 1px solid #ccc;
             box-sizing: content-box;
-
+            display:flex;
+            align-items: center;
             &:nth-child(2n),
             &:last-child {
               border-right: none;
+            }
+
+            .keybord{
+              height:100%;
+              width: 30%;
+              img{
+                vertical-align:middle;
+                height: 70%;
+                width: 100%;
+              }
+            }
+            .ml-2{
+              flex-grow: 1;
+              margin-right: 5px;
             }
           }
         }
