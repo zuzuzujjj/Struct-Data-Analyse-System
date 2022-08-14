@@ -2,7 +2,15 @@
   <div class="container" ref="annotationComponentRef">
     <!-- 吸附区域 -->
     <div class="top-show-warpper">
-
+      <div class="left-file-select">
+        <span>当前标注文件:</span>
+        <el-select v-model="currentIndex" class="m-2" placeholder="Select">
+          <el-option v-for="item in store.getFileIndexSelectOptions" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
+      <div class="right-data-select">
+        <el-button type="primary" round @click="showAlReadyAnnotationData">查看已标注数据</el-button>
+      </div>
     </div>
     <!-- 标注内容区域 -->
     <main class="content-warpper">
@@ -15,8 +23,8 @@
       <section class="right-content">
         <!-- 统计信息 -->
         <div class="top-info">
-          <span>实体数<div class="info-data">{{ 1 }}</div></span>
-          <span>关系数<div class="info-data">{{ 1 }}</div></span>
+          <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
+          <span>关系数<div class="info-data">{{store.annotationData[currentIndex].connections.length }}</div></span>
         </div>
         <!-- 增加实体型 -->
         <div class="add-entity">
@@ -27,7 +35,7 @@
             <span>实体类型菜单：</span>
             <el-select v-model="textSelectedOption.userChoosedCategoryId" class="m-2" placeholder="请选择标注实体型"
               size="large">
-              <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value" />
+              <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
           <!-- 快捷方式表 -->
@@ -83,12 +91,18 @@ watch(currentIndex, () => {
   currentAnnotationData = store.annotationData[currentIndex.value] //改变当前选择数据  
   registerAnnotator() //重新注册一下标注对象
   //置空上一个文件收集对象
-  textSelectedOption.userChoosedCategoryId = ''
+  textSelectedOption.userChoosedCategoryId = null
   textSelectedOption.startIndex = -1
   textSelectedOption.endIndex = -1
   textSelectedOption.currentChoosedEntity = '未选择'
 })
-
+/**
+ * 顶部功能区模块
+ */
+const showAlReadyAnnotationData=()=>{
+  console.log(store.alReadyAnnotationData[currentIndex.value]);
+  
+}
 /**
  * useAnnotation 数据标注模块
  */
@@ -98,7 +112,7 @@ let annotationContainer = ref<HTMLElement>()
 let annotator: Annotator
 //保存textSelected的内容
 const textSelectedOption = reactive({
-  userChoosedCategoryId: '',
+  userChoosedCategoryId: null as unknown,
   startIndex: -1,
   endIndex: -1,
   currentChoosedEntity: '未选择',
@@ -120,11 +134,13 @@ const registerAnnotator = () => {
  */
 const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: number) => {
   annotator.applyAction(Action.Label.Create(userChoosedCategoryId, startIndex, endIndex));
+  //向状态库里面更新标注的实体
+  store.alReadyAnnotationData[currentIndex.value].push(`${textSelectedOption.currentChoosedEntity} ${store.getCurrentEntityType(userChoosedCategoryId)}`)
   //更新数据
   currentAnnotationData.labels = annotator.store.json.labels
   currentAnnotationData.connections = annotator.store.json.connections
   //置空
-  textSelectedOption.userChoosedCategoryId = ''
+  textSelectedOption.userChoosedCategoryId = null
   textSelectedOption.currentChoosedEntity = '未选择'
 }
 /**
@@ -155,24 +171,12 @@ onUnmounted(() => {
   window.removeEventListener('resize', reDraw())
   document.removeEventListener('keyup', doKeyboard)
 })
-/**
- * 用户选择菜单模块
- */
-const selectOptions = [
-  {
-    value: '0',
-    label: '选项1',
-  },
-  {
-    value: '1',
-    label: '选项2'
-  }
-]
+
 //增加label
 watch(() => textSelectedOption.userChoosedCategoryId, () => {
-  if (textSelectedOption.userChoosedCategoryId === '' || textSelectedOption.currentChoosedEntity == '未选择') {
+  if (textSelectedOption.userChoosedCategoryId === null || textSelectedOption.currentChoosedEntity == '未选择') {
     //置空
-    textSelectedOption.userChoosedCategoryId = ''
+    textSelectedOption.userChoosedCategoryId = null
     textSelectedOption.currentChoosedEntity = '未选择'
     return
   }
@@ -184,7 +188,7 @@ let { y } = useMousePosition()
 const doKeyboard = (e: KeyboardEvent) => {
   let top = annotationComponentRef.value?.getBoundingClientRect().top ?? 100
   if (y.value - top <= 80) return;
-  if (e.key == 's') textSelectedOption.userChoosedCategoryId = '0';
+  if (e.key == 's') textSelectedOption.userChoosedCategoryId = 0;
 }
 </script>
  
@@ -202,6 +206,12 @@ const doKeyboard = (e: KeyboardEvent) => {
     width: 100%;
     height: 64px;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+    background-color: #fff;
+    opacity: 1;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

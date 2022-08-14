@@ -69,6 +69,7 @@ watch(fileName, () => {
 watch(fileContent, () => {
   store.addFileNameContent(fileContent.value as string)
   store.addAnnotationData(useCreateAnnotationData(fileContent.value as string))
+  store.addAlReadyAnnotationData([])
   isUpoladFile.value = true
 })
 

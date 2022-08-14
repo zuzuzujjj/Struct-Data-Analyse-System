@@ -10,28 +10,38 @@ export const useCreateAnnotationData = (fileContent: string) => {
         labelCategories: [
             {
                 "id": 0,
-                "text": "demo1",
+                "text": "B-LOC",
                 "color": "#eac0a2",
                 "borderColor": "#a38671"
             },
             {
                 "id": 1,
-                "text": "demo2",
+                "text": "B-ORG",
                 "color": "#619dff",
                 "borderColor": "#436db2"
             },
+            {
+                "id": 2,
+                "text": "I-LOC",
+                "color": "#9d61ff",
+                "borderColor": "#6d43b2"
+            },
+            {
+                "id": 3,
+                "text": " I-ORG",
+                "color": "#ff9d61",
+                "borderColor": "#b26d43"
+            }
         ],
-        labels: [] as any,
+        labels: [] as any[],
         connectionCategories: [
             {
                 "id": 0,
                 "text": "某种关系"
             },
         ],
-        connections: [] as any,
+        connections: [] as any[],
     }
-    annotationDataObject.content=fileContent
-    console.log('chuang',annotationDataObject);
-    
+    annotationDataObject.content = fileContent
     return annotationDataObject
 }
