@@ -3,9 +3,9 @@
  * @param content 导出内容一维数组
  * @param name 导出名字
  */
-export const useDownloadEntity=(content:string[],name:string)=>{
+export const useDownloadEntity=(content:{id: number;text:string;type:string}[],name:string)=>{
         let temp:string[]=content.map((item)=>{
-           return item+'\n'
+           return item.text+' '+item.type+'\n'
         })
         const blob = new Blob(temp, { type: 'text/plain,charset=UTF-8' });
         const downloadElement = document.createElement('a');

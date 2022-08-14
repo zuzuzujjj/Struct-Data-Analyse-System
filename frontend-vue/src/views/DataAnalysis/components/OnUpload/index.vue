@@ -164,11 +164,15 @@ const registerAnnotator = () => {
  */
 const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: number) => {
   annotator.applyAction(Action.Label.Create(userChoosedCategoryId, startIndex, endIndex));
-  //向状态库里面更新标注的实体
-  store.alReadyAnnotationData[currentIndex.value].push(`${textSelectedOption.currentChoosedEntity} ${store.getCurrentEntityType(userChoosedCategoryId)}`)
   //更新数据
   currentAnnotationData.labels = annotator.store.json.labels
   currentAnnotationData.connections = annotator.store.json.connections
+  //向状态库里面更新标注的实体
+  store.alReadyAnnotationData[currentIndex.value].push({
+    id: currentAnnotationData.labels[currentAnnotationData.labels.length - 1].id,
+    text: textSelectedOption.currentChoosedEntity,
+    type: store.getCurrentEntityType(userChoosedCategoryId)
+  })
   //置空
   textSelectedOption.userChoosedCategoryId = null
   textSelectedOption.currentChoosedEntity = '未选择'
@@ -179,8 +183,8 @@ const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: n
  */
 const removeLabel = (id: number) => {
   let idIndex: number = 0
-  for (let i = 0; i <= currentAnnotationData.labels.length; i++) {
-    if (id === currentAnnotationData.labels[i].id) {
+  for (let i = 0; i < store.alReadyAnnotationData[currentIndex.value].length; i++) {
+    if (id === store.alReadyAnnotationData[currentIndex.value][i].id) {
       idIndex = i
       break
     }
@@ -270,8 +274,9 @@ const doKeyboard = (e: KeyboardEvent) => {
 
     .left-file-select {
       margin-left: 2%;
-      span{
-        margin-right:15px;
+
+      span {
+        margin-right: 15px;
       }
     }
 
@@ -391,23 +396,26 @@ const doKeyboard = (e: KeyboardEvent) => {
             border-bottom: 1px solid #ccc;
             border-right: 1px solid #ccc;
             box-sizing: content-box;
-            display:flex;
+            display: flex;
             align-items: center;
+
             &:nth-child(2n),
             &:last-child {
               border-right: none;
             }
 
-            .keybord{
-              height:100%;
+            .keybord {
+              height: 100%;
               width: 30%;
-              img{
-                vertical-align:middle;
+
+              img {
+                vertical-align: middle;
                 height: 70%;
                 width: 100%;
               }
             }
-            .ml-2{
+
+            .ml-2 {
               flex-grow: 1;
               margin-right: 5px;
             }

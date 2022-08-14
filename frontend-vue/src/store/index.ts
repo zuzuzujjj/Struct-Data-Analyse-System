@@ -29,7 +29,7 @@ export const useAnnotation = defineStore('useAnnotation', {
       fileName: [] as string[], // name of the file name
       fileNameContent: [] as string[], // content of the file
       annotationData: [] as annotationDataType[], //annotationData of the annotation
-      alReadyAnnotationData: [] as string[][], //annotationData of the annotation
+      alReadyAnnotationData: [] as {id: number;text:string;type:string}[][], //annotationData of the annotation
     }
   },
   getters: {
@@ -104,6 +104,11 @@ export const useAnnotation = defineStore('useAnnotation', {
       })
       return temp
     },
+    /**
+     * 
+     * @param state 
+     * @returns 返回索引所代表的的标签值
+     */
     getCurrentEntityType(state) {
       return (index: number) => {
         return state.annotationData[0].labelCategories[index].text
@@ -137,7 +142,7 @@ export const useAnnotation = defineStore('useAnnotation', {
      * 
      * @param alReadyannotationData 传入的标注实体对象
      */
-    addAlReadyAnnotationData(alReadyannotationData: string[]) {
+    addAlReadyAnnotationData(alReadyannotationData: {id: number;text:string;type:string}[]) {
       this.alReadyAnnotationData.push(alReadyannotationData)
     }
   }
