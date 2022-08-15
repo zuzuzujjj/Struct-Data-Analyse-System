@@ -11,7 +11,7 @@ type annotationDataType = {
     id: number;
     text: string;
   }[];
-  connections: any[];
+  connections: { id: number; categoryId: number; fromId: number; toId: number }[];
 }
 
 import { defineStore } from "pinia" // 定义容器
@@ -29,7 +29,8 @@ export const useAnnotation = defineStore('useAnnotation', {
       fileName: [] as string[], // name of the file name
       fileNameContent: [] as string[], // content of the file
       annotationData: [] as annotationDataType[], //annotationData of the annotation
-      alReadyAnnotationData: [] as {id: number;text:string;type:string}[][], //annotationData of the annotation
+      alReadyAnnotationData: [] as { id: number; text: string; type: string }[][], //annotationData of the annotation
+      alReadyAnnotationConnection: [] as { id: number; fromId: number; toId: number; type: string }[][],//annotationConnections of the annotation
     }
   },
   getters: {
@@ -60,19 +61,19 @@ export const useAnnotation = defineStore('useAnnotation', {
           case "B—LOC":
             temp.push({
               value: item.id,
-              label: item.text+'--地点'
+              label: item.text + '--地点'
             })
             break;
           case "I—LOC":
             temp.push({
               value: item.id,
-              label: item.text+'--词的中间'
+              label: item.text + '--词的中间'
             })
             break;
           case "B—PER":
             temp.push({
               value: item.id,
-              label: item.text+'--人物'
+              label: item.text + '--人物'
             })
             break;
           case "I—PER":
@@ -84,7 +85,7 @@ export const useAnnotation = defineStore('useAnnotation', {
           case "B—ORG":
             temp.push({
               value: item.id,
-              label: item.text+'--组织'
+              label: item.text + '--组织'
             })
             break;
           case "I—ORG":
@@ -96,7 +97,7 @@ export const useAnnotation = defineStore('useAnnotation', {
           case "O":
             temp.push({
               value: item.id,
-              label: item.text+'--其它'
+              label: item.text + '--其它'
             })
             break;
         }
@@ -112,6 +113,16 @@ export const useAnnotation = defineStore('useAnnotation', {
     getCurrentEntityType(state) {
       return (index: number) => {
         return state.annotationData[0].labelCategories[index].text
+      }
+    },
+    /**
+     * 
+     * @param state 
+     * @returns 返回索引所代表的关系值
+     */
+    getCurrentConnnectionType(state) {
+      return (index: number, fileIndex: number) => {
+        return state.annotationData[fileIndex].connectionCategories[index].text
       }
     }
 
@@ -142,8 +153,15 @@ export const useAnnotation = defineStore('useAnnotation', {
      * 
      * @param alReadyannotationData 传入的标注实体对象
      */
-    addAlReadyAnnotationData(alReadyannotationData: {id: number;text:string;type:string}[]) {
+    addAlReadyAnnotationData(alReadyannotationData: { id: number; text: string; type: string }[]) {
       this.alReadyAnnotationData.push(alReadyannotationData)
+    },
+    /**
+     * 
+     * @param AlReadyAnnotationConnection 传入标注的关系对象
+     */
+    addAlReadyAnnotationConnection(AlReadyAnnotationConnection: { id: number; fromId: number; toId: number; type: string }[]) {
+      this.alReadyAnnotationConnection.push(AlReadyAnnotationConnection)
     }
   }
 

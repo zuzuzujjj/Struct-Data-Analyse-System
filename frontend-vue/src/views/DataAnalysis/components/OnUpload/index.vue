@@ -14,96 +14,99 @@
         <el-button type="primary" round>生成知识图谱</el-button>
       </div>
     </div>
-    <!-- 标注内容区域 -->
-    <main class="content-warpper">
-      <section class="left-content">
+    <!-- 添加关系选择菜单 -->
+    <el-drawer v-model="shouldOpenDrawer" title="I am the title" direction="ttb" ></el-drawer>
+      <!-- 标注内容区域 -->
+      <main class="content-warpper">
         <!-- 数据标注区域区域 -->
-        <div class="data-show" ref="annotationContainer">
-        </div>
-      </section>
-      <!-- 功能区域 -->
-      <section class="right-content">
-        <!-- 统计信息 -->
-        <div class="top-info">
-          <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
-          <span>关系数<div class="info-data">{{ store.annotationData[currentIndex].connections.length }}</div></span>
-        </div>
-        <!-- 增加实体型 -->
-        <div class="add-entity">
-          <div class="current-choose">
-            当前选中:<span>{{ textSelectedOption.currentChoosedEntity }}</span>
+        <section class="left-content">
+          <div class="data-show" ref="annotationContainer">
           </div>
-          <div class="select-menus">
-            <span>实体类型菜单：</span>
-            <el-select v-model="textSelectedOption.userChoosedCategoryId" class="m-2" placeholder="请选择标注实体型"
-              size="large">
-              <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label"
-                :value="item.value" />
-            </el-select>
+        </section>
+        <!-- 功能区域 -->
+        <section class="right-content">
+          <!-- 统计信息 -->
+          <div class="top-info">
+            <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
+            <span>关系数<div class="info-data">{{ store.annotationData[currentIndex].connections.length }}</div></span>
           </div>
-          <!-- 快捷方式表 -->
-          <div class="short-select">
-            <span class="short-title">键盘快捷方式</span>
-            <ul class="key-list">
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/mouseR.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">删除实体</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/Q_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">B—LOC--地点</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/W_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">I—LOC--词的中间</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/E_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">B—PER--人物</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/R_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">I—PER</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/A_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">B—ORG--组织</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/D_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">I—ORG</el-tag>
-              </li>
-              <li class="key-item">
-                <span class="keybord"><img src="./image/icons/F_round.svg" alt=""></span>
-                <el-tag class="ml-2" type="success">O--其它</el-tag>
-              </li>
-            </ul>
+          <!-- 增加实体型 -->
+          <div class="add-entity">
+            <div class="current-choose">
+              当前选中:<span>{{ textSelectedOption.currentChoosedEntity }}</span>
+            </div>
+            <div class="select-menus">
+              <span>实体类型菜单：</span>
+              <el-select v-model="textSelectedOption.userChooseEntityId" class="m-2" placeholder="请选择标注实体型"
+                size="large">
+                <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </div>
+            <!-- 键盘快捷方式表 -->
+            <div class="short-select">
+              <span class="short-title">键盘快捷方式</span>
+              <ul class="key-list">
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/mouseR.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">删除实体</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/Q_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">B—LOC--地点</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/W_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">I—LOC--词的中间</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/E_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">B—PER--人物</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/R_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">I—PER</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/A_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">B—ORG--组织</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/D_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">I—ORG</el-tag>
+                </li>
+                <li class="key-item">
+                  <span class="keybord"><img src="./image/icons/F_round.svg" alt=""></span>
+                  <el-tag class="ml-2" type="success">O--其它</el-tag>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
-    <!--数据与图展示区域  -->
-    <main class="graph-data-warpper">
-      <!-- 标注实体统计 -->
-      <section class="data-table">
-        <el-table :data="store.alReadyAnnotationData[currentIndex]" style="width: 100%" height="400">
-          <el-table-column prop="text" label="实体名称" width="180" />
-          <el-table-column prop="type" label="实体类型" width="180" />
-          <el-table-column label="操作">
-            <template #default="scope">
-              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </section>
-      <!-- 中间图表分析 -->
-      <section class="middle-chart">
+        </section>
+      </main>
+      <!--实体数据与分析展示区域  -->
+      <main class="graph-data-warpper">
+        <!-- 标注实体统计 -->
+        <section class="data-table">
+          <el-table :data="store.alReadyAnnotationData[currentIndex]" style="width: 100%" height="400">
+            <el-table-column prop="text" label="实体名称" width="180" />
+            <el-table-column prop="type" label="实体类型" width="180" />
+            <el-table-column label="操作">
+              <template #default="scope">
+                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </section>
+        <!-- 右侧图表分析 -->
+        <section class="right-chart">
+          1
+        </section>
+      </main>
+      <!-- 关系数据与分析区域 -->
+      <main class="connection-data-warpper">
 
-      </section>
-      <section class="right-chart">
-
-      </section>
-    </main>
+      </main>
   </div>
 </template>
  
@@ -125,10 +128,11 @@ watch(currentIndex, () => {
   currentAnnotationData = store.annotationData[currentIndex.value] //改变当前选择数据  
   registerAnnotator() //重新注册一下标注对象
   //置空上一个文件收集对象
-  textSelectedOption.userChoosedCategoryId = null
+  textSelectedOption.userChooseEntityId = null
   textSelectedOption.startIndex = -1
   textSelectedOption.endIndex = -1
   textSelectedOption.currentChoosedEntity = '未选择'
+  textSelectedOption.userChooseConnectionId = null
 })
 /**
  * 顶部功能区模块
@@ -143,12 +147,13 @@ const downLoadAlReadyAnnotationData = () => {
 let annotationContainer = ref<HTMLElement>()
 //实例对象
 let annotator: Annotator
-//保存textSelected的内容
+//保存textSelected的内容,选择的关系内容
 const textSelectedOption = reactive({
-  userChoosedCategoryId: null as unknown,
+  userChooseEntityId: null as unknown,
   startIndex: -1,
   endIndex: -1,
   currentChoosedEntity: '未选择',
+  userChooseConnectionId: null as unknown,
 })
 const registerAnnotator = () => {
   if (annotator) {
@@ -161,31 +166,42 @@ const registerAnnotator = () => {
     textSelectedOption.endIndex = endIndex
     textSelectedOption.currentChoosedEntity = currentAnnotationData.content.slice(startIndex, endIndex)
   })
-  //右键点击时
+  //右键点击实体时删除标签
   annotator.on('labelRightClicked', (id: number) => {
     // 输出用户点击的label的ID
     removeLabel(id)
+  })
+  //连续点击两个标签时增加关系
+  annotator.on('twoLabelsClicked', (fromId: number, toId: number) => {
+    // 输出用户选取的两个label的ID
+    // addConnection(fromId, toId)
+    shouldOpenDrawer.value=true //打开Drawer
+  })
+  //右键删除connection
+  annotator.on('connectionRightClicked', (id: number) => {
+    // 输出用户点击的Connection的ID, 点击鼠标的event
+    removeConnection(id)
   });
 }
 /**
  * 
- * @param userChoosedCategoryId 用户选择ID
+ * @param userChooseEntityId 用户选择ID
  * @param startIndex 开始索引
  * @param endIndex 结束索引
  */
-const addLabel = (userChoosedCategoryId: number, startIndex: number, endIndex: number) => {
-  annotator.applyAction(Action.Label.Create(userChoosedCategoryId, startIndex, endIndex));
+const addLabel = (userChooseEntityId: number, startIndex: number, endIndex: number) => {
+  annotator.applyAction(Action.Label.Create(userChooseEntityId, startIndex, endIndex));
   //更新数据
   currentAnnotationData.labels = annotator.store.json.labels
   currentAnnotationData.connections = annotator.store.json.connections
   //向状态库里面更新标注的实体
   store.alReadyAnnotationData[currentIndex.value].push({
-    id: currentAnnotationData.labels[currentAnnotationData.labels.length - 1].id,
+    id: currentAnnotationData.labels.slice(-1)[0].id,
     text: textSelectedOption.currentChoosedEntity,
-    type: store.getCurrentEntityType(userChoosedCategoryId)
+    type: store.getCurrentEntityType(userChooseEntityId)
   })
   //置空
-  textSelectedOption.userChoosedCategoryId = null
+  textSelectedOption.userChooseEntityId = null
   textSelectedOption.currentChoosedEntity = '未选择'
 }
 /**
@@ -208,9 +224,47 @@ const removeLabel = (id: number) => {
   currentAnnotationData.connections = annotator.store.json.connections
 }
 /**
- * 增加关系
+ * 
+ * @param fromId 开始id
+ * @param toId 结束ID
  */
+const addConnection = (fromId: number, toId: number) => {
+  annotator.applyAction(Action.Connection.Create(Number(textSelectedOption.userChooseConnectionId), fromId, toId))
+  //更新数据
+  currentAnnotationData.labels = annotator.store.json.labels
+  currentAnnotationData.connections = annotator.store.json.connections
+  console.log('add-l', currentAnnotationData.connections)
 
+  //向状态库里面更新标注的关系
+  store.alReadyAnnotationConnection[currentIndex.value].push({
+    id: currentAnnotationData.connections.slice(-1)[0].id,
+    fromId,
+    toId,
+    type: store.getCurrentConnnectionType(Number(textSelectedOption.userChooseConnectionId), currentIndex.value)
+  })
+
+  //置空
+  textSelectedOption.userChooseConnectionId= null
+}
+/**
+ * 
+ * @param id 需要删除的connect id
+ */
+const removeConnection = (id: number) => {
+  let idIndex: number = 0
+  for (let i = 0; i < store.alReadyAnnotationConnection[currentIndex.value].length; i++) {
+    if (id === store.alReadyAnnotationConnection[currentIndex.value][i].id) {
+      idIndex = i
+      break
+    }
+  }
+  //更新已标注的状态数据
+  store.alReadyAnnotationConnection[currentIndex.value].splice(idIndex, 1)
+  annotator.applyAction(Action.Connection.Delete(id));
+  //更新状态库
+  currentAnnotationData.labels = annotator.store.json.labels
+  currentAnnotationData.connections = annotator.store.json.connections
+}
 /**
  * 窗口尺寸改变调整回调
  */
@@ -236,36 +290,38 @@ onUnmounted(() => {
   document.removeEventListener('keyup', doKeyboard)
 })
 
-//监控userChoosedCategoryId，当用户选择了时，增加label
-watch(() => textSelectedOption.userChoosedCategoryId, () => {
-  if (textSelectedOption.userChoosedCategoryId === null || textSelectedOption.currentChoosedEntity == '未选择') {
+//监控userChooseEntityId，当用户选择了时，增加label
+watch(() => textSelectedOption.userChooseEntityId, () => {
+  if (textSelectedOption.userChooseEntityId === null || textSelectedOption.currentChoosedEntity == '未选择') {
     //置空
-    textSelectedOption.userChoosedCategoryId = null
+    textSelectedOption.userChooseEntityId = null
     textSelectedOption.currentChoosedEntity = '未选择'
     return
   }
-  addLabel(Number(textSelectedOption.userChoosedCategoryId), textSelectedOption.startIndex, textSelectedOption.endIndex)
+  addLabel(Number(textSelectedOption.userChooseEntityId), textSelectedOption.startIndex, textSelectedOption.endIndex)
 })
-//绑定键盘事件
+//绑定增加实体键盘事件
 let annotationComponentRef = ref<HTMLElement>()
 let { y } = useMousePosition()
 const doKeyboard = (e: KeyboardEvent) => {
   let top = annotationComponentRef.value?.getBoundingClientRect().top ?? 100
   if (y.value - top <= 80) return;
-  if (e.key == 'q' || e.key == 'Q') textSelectedOption.userChoosedCategoryId = 0;
-  if (e.key == 'w' || e.key == 'W') textSelectedOption.userChoosedCategoryId = 1;
-  if (e.key == 'e' || e.key == 'E') textSelectedOption.userChoosedCategoryId = 2;
-  if (e.key == 'r' || e.key == 'R') textSelectedOption.userChoosedCategoryId = 3;
-  if (e.key == 'a' || e.key == 'A') textSelectedOption.userChoosedCategoryId = 4;
-  if (e.key == 'd' || e.key == 'D') textSelectedOption.userChoosedCategoryId = 5;
-  if (e.key == 'f' || e.key == 'F') textSelectedOption.userChoosedCategoryId = 6;
+  if (e.key == 'q' || e.key == 'Q') textSelectedOption.userChooseEntityId = 0;
+  if (e.key == 'w' || e.key == 'W') textSelectedOption.userChooseEntityId = 1;
+  if (e.key == 'e' || e.key == 'E') textSelectedOption.userChooseEntityId = 2;
+  if (e.key == 'r' || e.key == 'R') textSelectedOption.userChooseEntityId = 3;
+  if (e.key == 'a' || e.key == 'A') textSelectedOption.userChooseEntityId = 4;
+  if (e.key == 'd' || e.key == 'D') textSelectedOption.userChooseEntityId = 5;
+  if (e.key == 'f' || e.key == 'F') textSelectedOption.userChooseEntityId = 6;
 }
-
+/**
+ * 添加connection模块
+ */
+let shouldOpenDrawer=ref<boolean>(false) //是否应该打开Drawer
 /**
  * 数据展示功能模块
  */
-const handleDelete=(index: number,row:{id: number;text: string;type: string})=>{
-  console.log(index,row);
+const handleDelete = (index: number, row: { id: number; text: string; type: string }) => {
   removeLabel(row.id)
 }
 </script>
@@ -386,7 +442,6 @@ const handleDelete=(index: number,row:{id: number;text: string;type: string})=>{
 
         span {
           display: block;
-          line-height: 60px;
         }
       }
 
@@ -444,12 +499,19 @@ const handleDelete=(index: number,row:{id: number;text: string;type: string})=>{
         }
       }
     }
+
+    .add-connection {
+      position: fixed;
+      height: 300px;
+      width: 300px;
+      background-color: red;
+    }
   }
 }
 
-//数据区域
+//实体数据区域
 .graph-data-warpper {
-  padding: 0 1%;
+  padding: 0 1.75%;
   display: flex;
   justify-content: space-between;
   height: 500px;
@@ -461,18 +523,16 @@ const handleDelete=(index: number,row:{id: number;text: string;type: string})=>{
     padding: 1%;
   }
 
-  .middle-chart {
-    width: 20%;
-    .card;
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-  }
-
   .right-chart {
-    width: 20%;
+    width: 60%;
     .card;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-
   }
+}
+
+//连接关系数据区域
+.connection-data-warpper {
+  height: 500px;
 }
 
 // useAnnotation 相关css

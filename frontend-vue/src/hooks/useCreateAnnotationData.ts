@@ -58,7 +58,7 @@ export const useCreateAnnotationData = (fileContent: string) => {
                 "text": "某种关系"
             },
         ],
-        connections: [] as any[],
+        connections: [] as  {id:number;categoryId:number;fromId:number;toId:number}[],
     }
     annotationDataObject.content = fileContent
     return annotationDataObject
