@@ -10,113 +10,150 @@
         </el-select>
       </div>
       <div class="right-data-select">
-        <el-button type="primary" round @click="downLoadAlReadyAnnotationData">导出标注数据</el-button>
-        <el-button type="primary" round>生成知识图谱</el-button>
+        <el-button type="primary" round @click="downLoadAlReadyAnnotationData">导出实体数据</el-button>
+        <el-button type="primary" round @click="downLoadAlReadyAnnotationConnection">导出关系数据</el-button>
+        <el-button type="primary" round @click="toShowGraph">生成知识图谱</el-button>
       </div>
     </div>
     <!-- 添加关系选择菜单 -->
-    <el-drawer v-model="shouldOpenDrawer" title="I am the title" direction="ttb" ></el-drawer>
-      <!-- 标注内容区域 -->
-      <main class="content-warpper">
-        <!-- 数据标注区域区域 -->
-        <section class="left-content">
-          <div class="data-show" ref="annotationContainer">
+    <el-drawer v-model="shouldOpenDrawer" direction="ttb" size="20%" :show-close="false" :with-header="false">
+      <div class="seclect-connect-warpper">
+        <span>请选择对应的实体关系</span>
+        <el-select v-model="entitySelectedOption.userChooseConnectionId" filterable allow-create default-first-option
+          :reserve-keyword="false" placeholder="选择实体关系">
+          <el-option v-for="item in  store.getConnectionTypeSlectOptions(currentIndex)" :key="item.value"
+            :label="item.label" :value="item.value" />
+        </el-select>
+        <el-button type="primary" @click="confirmAddConnection">确定</el-button>
+      </div>
+    </el-drawer>
+    <!-- 标注内容区域 -->
+    <main class="content-warpper">
+      <!-- 数据标注区域区域 -->
+      <section class="left-content">
+        <div class="data-show" ref="annotationContainer">
+        </div>
+      </section>
+      <!-- 功能区域 -->
+      <section class="right-content">
+        <!-- 统计信息 -->
+        <div class="top-info">
+          <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
+          <span>关系数<div class="info-data">{{ store.annotationData[currentIndex].connections.length }}</div></span>
+        </div>
+        <!-- 增加实体型 -->
+        <div class="add-entity">
+          <div class="current-choose">
+            当前选中:<span>{{ textSelectedOption.currentChoosedEntity }}</span>
           </div>
-        </section>
-        <!-- 功能区域 -->
-        <section class="right-content">
-          <!-- 统计信息 -->
-          <div class="top-info">
-            <span>实体数<div class="info-data">{{ store.annotationData[currentIndex].labels.length }}</div></span>
-            <span>关系数<div class="info-data">{{ store.annotationData[currentIndex].connections.length }}</div></span>
+          <div class="select-menus">
+            <span>实体类型菜单：</span>
+            <el-select v-model="textSelectedOption.userChooseEntityId" class="m-2" placeholder="请选择标注实体型" size="large">
+              <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label"
+                :value="item.value" />
+            </el-select>
           </div>
-          <!-- 增加实体型 -->
-          <div class="add-entity">
-            <div class="current-choose">
-              当前选中:<span>{{ textSelectedOption.currentChoosedEntity }}</span>
-            </div>
-            <div class="select-menus">
-              <span>实体类型菜单：</span>
-              <el-select v-model="textSelectedOption.userChooseEntityId" class="m-2" placeholder="请选择标注实体型"
-                size="large">
-                <el-option v-for="item in store.getEntityTypeSelectOptions" :key="item.value" :label="item.label"
-                  :value="item.value" />
-              </el-select>
-            </div>
-            <!-- 键盘快捷方式表 -->
-            <div class="short-select">
-              <span class="short-title">键盘快捷方式</span>
-              <ul class="key-list">
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/mouseR.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">删除实体</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/Q_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">B—LOC--地点</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/W_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">I—LOC--词的中间</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/E_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">B—PER--人物</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/R_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">I—PER</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/A_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">B—ORG--组织</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/D_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">I—ORG</el-tag>
-                </li>
-                <li class="key-item">
-                  <span class="keybord"><img src="./image/icons/F_round.svg" alt=""></span>
-                  <el-tag class="ml-2" type="success">O--其它</el-tag>
-                </li>
-              </ul>
-            </div>
+          <!-- 键盘快捷方式表 -->
+          <div class="short-select">
+            <span class="short-title">键盘快捷方式</span>
+            <ul class="key-list">
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/mouseR.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">删除实体</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/Q_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—LOC--地点</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/W_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—LOC--词的中间</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/E_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—PER--人物</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/R_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—PER</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/A_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">B—ORG--组织</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/D_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">I—ORG</el-tag>
+              </li>
+              <li class="key-item">
+                <span class="keybord"><img src="./image/icons/F_round.svg" alt=""></span>
+                <el-tag class="ml-2" type="success">O--其它</el-tag>
+              </li>
+            </ul>
           </div>
-        </section>
-      </main>
-      <!--实体数据与分析展示区域  -->
-      <main class="graph-data-warpper">
-        <!-- 标注实体统计 -->
-        <section class="data-table">
-          <el-table :data="store.alReadyAnnotationData[currentIndex]" style="width: 100%" height="400">
-            <el-table-column prop="text" label="实体名称" width="180" />
-            <el-table-column prop="type" label="实体类型" width="180" />
-            <el-table-column label="操作">
-              <template #default="scope">
-                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </section>
-        <!-- 右侧图表分析 -->
-        <section class="right-chart">
-          1
-        </section>
-      </main>
-      <!-- 关系数据与分析区域 -->
-      <main class="connection-data-warpper">
-
-      </main>
+        </div>
+      </section>
+    </main>
+    <!--实体数据与分析展示区域  -->
+    <main class="entity-data-warpper">
+      <!-- 标注实体统计 -->
+      <section class="data-table">
+        <el-table :data="store.alReadyAnnotationData[currentIndex]" style="width: 100%" height="400">
+          <el-table-column prop="text" label="实体名称" width="180" />
+          <el-table-column prop="type" label="实体类型" width="180" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-button size="small" type="danger" @click="handleEntityDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </section>
+      <!-- 右侧图表分析 -->
+      <section class="data-right-chart">
+        实体分析区域
+      </section>
+    </main>
+    <!-- 关系数据与分析区域 -->
+    <main class="connection-data-warpper">
+      <!-- 标注关系三元组统计 -->
+      <section class="connection-table">
+        <el-table :data="store.getTriplet(currentIndex)" style="width: 100%" height="400">
+          <el-table-column prop="start" label="实体名称" width="130" />
+          <el-table-column prop="connection" label="实体关系" width="130" />
+          <el-table-column prop="end" label="实体名称" width="130" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-button size="small" type="danger" @click="handleTripletDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </section>
+      <!-- 右侧图表分析 -->
+      <section class="connection-right-chart">
+        实体关系分析区域
+      </section>
+    </main>
+    <!-- 生成图数据展示区域 -->
+    <main class="graph-show-wapper" v-if="isShowGraph" ref="showGraphComponentRef">
+      <div class="graph-show">
+        <std-graph :data="store.getGraphData(currentIndex)" :plugins="['minimap', 'toolbar']" :minimapszie="[200, 100]">
+        </std-graph>
+      </div>
+      <div class="right-menus">
+      </div>
+    </main>
+    <footer style="height:200px;"></footer>
   </div>
 </template>
  
  
 <script lang='ts' setup>
-import { ref, reactive, watch, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, watch, onMounted, onUnmounted, toRaw, nextTick } from 'vue'
 import { useAnnotation } from '@/store'
 import { Annotator, Action } from 'poplar-annotation'
 import { useMousePosition } from '@/hooks/useMousePosition'
-import { useDownloadEntity } from '@/hooks/useDownloadEntity'
+import { useDownloadEntity, useDownloadConnection } from '@/hooks/useDownloadEntity'
+import StdGraph from '@/components/StdGraph/index.vue'
 /**
  * 切换文件模块
  */
@@ -132,13 +169,27 @@ watch(currentIndex, () => {
   textSelectedOption.startIndex = -1
   textSelectedOption.endIndex = -1
   textSelectedOption.currentChoosedEntity = '未选择'
-  textSelectedOption.userChooseConnectionId = null
+  entitySelectedOption.userChooseConnectionId = null
+  //关闭知识图谱
+  isShowGraph.value=false
 })
 /**
  * 顶部功能区模块
  */
 const downLoadAlReadyAnnotationData = () => {
-  useDownloadEntity(store.alReadyAnnotationData[currentIndex.value], store.fileName[currentIndex.value] + '-do')
+  useDownloadEntity(store.alReadyAnnotationData[currentIndex.value], store.fileName[currentIndex.value] + '-entity-do')
+}
+const downLoadAlReadyAnnotationConnection = () => {
+  useDownloadConnection(store.getTriplet(currentIndex.value), store.fileName[currentIndex.value] + '-connection-do')
+}
+//生成知识图谱
+let isShowGraph=ref<boolean>(false)
+let showGraphComponentRef=ref<HTMLElement>()
+const toShowGraph=()=>{
+  isShowGraph.value= true
+  nextTick(()=>{
+    showGraphComponentRef.value?.scrollIntoView()
+  })
 }
 /**
  * useAnnotation 数据标注模块
@@ -153,7 +204,13 @@ const textSelectedOption = reactive({
   startIndex: -1,
   endIndex: -1,
   currentChoosedEntity: '未选择',
+
+})
+//保存entitySelectedOption的内容，前后点击的实体信息
+const entitySelectedOption = reactive({
   userChooseConnectionId: null as unknown,
+  fromId: -1,
+  toId: -1
 })
 const registerAnnotator = () => {
   if (annotator) {
@@ -174,8 +231,9 @@ const registerAnnotator = () => {
   //连续点击两个标签时增加关系
   annotator.on('twoLabelsClicked', (fromId: number, toId: number) => {
     // 输出用户选取的两个label的ID
-    // addConnection(fromId, toId)
-    shouldOpenDrawer.value=true //打开Drawer
+    entitySelectedOption.fromId = fromId
+    entitySelectedOption.toId = toId
+    shouldOpenDrawer.value = true //打开Drawer
   })
   //右键删除connection
   annotator.on('connectionRightClicked', (id: number) => {
@@ -209,6 +267,7 @@ const addLabel = (userChooseEntityId: number, startIndex: number, endIndex: numb
  * @param id 删除id
  */
 const removeLabel = (id: number) => {
+  //查出实体数据存储的位置
   let idIndex: number = 0
   for (let i = 0; i < store.alReadyAnnotationData[currentIndex.value].length; i++) {
     if (id === store.alReadyAnnotationData[currentIndex.value][i].id) {
@@ -219,6 +278,14 @@ const removeLabel = (id: number) => {
   //更新已标注的状态数据
   store.alReadyAnnotationData[currentIndex.value].splice(idIndex, 1)
   annotator.applyAction(Action.Label.Delete(id));
+  //查出和该实体相关的关系位置,删除与之相关联的关系
+  for (let i = 0; i < store.alReadyAnnotationConnection[currentIndex.value].length; i++) {
+    if (id === store.alReadyAnnotationConnection[currentIndex.value][i].fromId || id === store.alReadyAnnotationConnection[currentIndex.value][i].toId) {
+      store.alReadyAnnotationConnection[currentIndex.value].splice(i, 1)
+      i -= 1
+    }
+  }
+
   //更新状态库
   currentAnnotationData.labels = annotator.store.json.labels
   currentAnnotationData.connections = annotator.store.json.connections
@@ -229,22 +296,23 @@ const removeLabel = (id: number) => {
  * @param toId 结束ID
  */
 const addConnection = (fromId: number, toId: number) => {
-  annotator.applyAction(Action.Connection.Create(Number(textSelectedOption.userChooseConnectionId), fromId, toId))
+  annotator.applyAction(Action.Connection.Create(Number(entitySelectedOption.userChooseConnectionId), fromId, toId))
+  //添加相同的关系边，直接返回
+  if (currentAnnotationData.connections.length === annotator.store.json.connections.length) return;
   //更新数据
   currentAnnotationData.labels = annotator.store.json.labels
   currentAnnotationData.connections = annotator.store.json.connections
-  console.log('add-l', currentAnnotationData.connections)
 
   //向状态库里面更新标注的关系
   store.alReadyAnnotationConnection[currentIndex.value].push({
     id: currentAnnotationData.connections.slice(-1)[0].id,
     fromId,
     toId,
-    type: store.getCurrentConnnectionType(Number(textSelectedOption.userChooseConnectionId), currentIndex.value)
+    type: store.getCurrentConnnectionType(Number(entitySelectedOption.userChooseConnectionId), currentIndex.value)
   })
 
   //置空
-  textSelectedOption.userChooseConnectionId= null
+  entitySelectedOption.userChooseConnectionId = null
 }
 /**
  * 
@@ -314,16 +382,42 @@ const doKeyboard = (e: KeyboardEvent) => {
   if (e.key == 'd' || e.key == 'D') textSelectedOption.userChooseEntityId = 5;
   if (e.key == 'f' || e.key == 'F') textSelectedOption.userChooseEntityId = 6;
 }
+//实体展示
+const handleEntityDelete = (index: number, row: { id: number; text: string; type: string }) => {
+  removeLabel(row.id)
+}
 /**
  * 添加connection模块
  */
-let shouldOpenDrawer=ref<boolean>(false) //是否应该打开Drawer
-/**
- * 数据展示功能模块
- */
-const handleDelete = (index: number, row: { id: number; text: string; type: string }) => {
-  removeLabel(row.id)
+let shouldOpenDrawer = ref<boolean>(false) //是否应该打开Drawer
+const confirmAddConnection = () => {
+  if (entitySelectedOption.userChooseConnectionId === null) {
+    shouldOpenDrawer.value = false
+    return
+  }
+  //先确认用户选择的是否在标注对象中
+  if (Number(entitySelectedOption.userChooseConnectionId) <= currentAnnotationData.connectionCategories.length - 1) {
+    addConnection(entitySelectedOption.fromId, entitySelectedOption.toId)
+  }
+  else {
+    currentAnnotationData.connectionCategories.push({
+      id: currentAnnotationData.connectionCategories.length,
+      text: String(entitySelectedOption.userChooseConnectionId)
+    })
+    //重新注册一下标注对象
+    registerAnnotator()
+    entitySelectedOption.userChooseConnectionId = currentAnnotationData.connectionCategories.length - 1
+    addConnection(entitySelectedOption.fromId, entitySelectedOption.toId)
+  }
+  // 置空
+  entitySelectedOption.userChooseConnectionId = null
+  shouldOpenDrawer.value = false
 }
+//三元组展示
+const handleTripletDelete = (index: number, row: { id: number; start: string; connection: string; end: string }) => {
+  removeConnection(row.id)
+}
+
 </script>
  
 <style scoped lang="less">
@@ -357,6 +451,21 @@ const handleDelete = (index: number, row: { id: number; text: string; type: stri
 
     .right-data-select {
       margin-right: 2%;
+    }
+  }
+
+  //增加关系区域
+  .seclect-connect-warpper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    span {
+      margin-right: 20px;
+    }
+
+    .el-select {
+      margin-right: 20px;
     }
   }
 }
@@ -510,7 +619,7 @@ const handleDelete = (index: number, row: { id: number; text: string; type: stri
 }
 
 //实体数据区域
-.graph-data-warpper {
+.entity-data-warpper {
   padding: 0 1.75%;
   display: flex;
   justify-content: space-between;
@@ -523,7 +632,7 @@ const handleDelete = (index: number, row: { id: number; text: string; type: stri
     padding: 1%;
   }
 
-  .right-chart {
+  .data-right-chart {
     width: 60%;
     .card;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
@@ -532,7 +641,49 @@ const handleDelete = (index: number, row: { id: number; text: string; type: stri
 
 //连接关系数据区域
 .connection-data-warpper {
+  padding: 0 1.75%;
+  display: flex;
+  justify-content: space-between;
   height: 500px;
+
+  .connection-table {
+    width: 35%;
+    .card;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    padding: 1%;
+  }
+
+  .connection-right-chart {
+    width: 60%;
+    .card;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  }
+}
+
+//图展示区域
+.graph-show-wapper {
+  padding: 0 1.75%;
+  display: flex;
+  justify-content: space-between;
+  height: 500px;
+
+  .graph-show {
+    padding: 1.5%;
+    height: 100%;
+    width: 65%;
+    .card;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
+  }
+
+  .right-menus {
+    padding: 1.5%;
+    height: 100%;
+    width: 25%;
+    .card;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
+  }
 }
 
 // useAnnotation 相关css

@@ -13,7 +13,8 @@ type annotationDataType = {
   }[];
   connections: { id: number; categoryId: number; fromId: number; toId: number }[];
 }
-
+import { node, edge } from '@/hooks/useGraphData'
+import { reactive } from 'vue';
 import { defineStore } from "pinia" // 定义容器
 /**
  * @des 使用标注的状态管理
@@ -108,6 +109,23 @@ export const useAnnotation = defineStore('useAnnotation', {
     /**
      * 
      * @param state 
+     * @returns 实体类型关系选择菜单
+     */
+    getConnectionTypeSlectOptions(state) {
+      return (fileIndex: number) => {
+        let temp: { value: number; label: string }[] = []
+        state.annotationData[fileIndex].connectionCategories.forEach((item) => {
+          temp.push({
+            value: item.id,
+            label: item.text
+          })
+        })
+        return temp
+      }
+    },
+    /**
+     * 
+     * @param state 
      * @returns 返回索引所代表的的标签值
      */
     getCurrentEntityType(state) {
@@ -123,6 +141,89 @@ export const useAnnotation = defineStore('useAnnotation', {
     getCurrentConnnectionType(state) {
       return (index: number, fileIndex: number) => {
         return state.annotationData[fileIndex].connectionCategories[index].text
+      }
+    },
+    /**
+     * 
+     * @param state 
+     * @returns 返回 entity connect entity 对象
+     */
+    getTriplet(state) {
+      return (fileIndex: number) => {
+        let triplet: { id: number; start: string; connection: string; end: string }[] = []
+        state.alReadyAnnotationConnection[fileIndex].forEach((item) => {
+          let temp: { id: number; start: string; connection: string; end: string } = {
+            id: -1,
+            start: '',
+            connection: '',
+            end: '',
+          }
+          for (let index = 0; index < state.alReadyAnnotationData[fileIndex].length; index++) {
+            if (item.fromId === state.alReadyAnnotationData[fileIndex][index].id) {
+              temp.start = state.alReadyAnnotationData[fileIndex][index].text
+              break
+            }
+          }
+          for (let index = 0; index < state.alReadyAnnotationData[fileIndex].length; index++) {
+            if (item.toId === state.alReadyAnnotationData[fileIndex][index].id) {
+              temp.end = state.alReadyAnnotationData[fileIndex][index].text
+              break
+            }
+          }
+          temp.connection = item.type
+          temp.id = item.id
+          triplet.push(temp)
+        })
+        return triplet
+      }
+    },
+    getCreateNodes(state) {
+      return (fileIndex: number) => {
+        let currentNodes: node[] = []
+        state.alReadyAnnotationData[fileIndex].forEach((item) => {
+          currentNodes.push({
+            id: String(item.id),
+            label: item.text
+          })
+        })
+        return currentNodes
+      }
+
+    },
+    getCreateEdges(state) {
+      return (fileIndex: number) => {
+        let currentEdges: edge[] = []
+        state.alReadyAnnotationConnection[fileIndex].forEach((item) => {
+          currentEdges.push({
+            source: String(item.fromId),
+            target: String(item.toId),
+            label: item.type
+          })
+        })
+        return currentEdges
+      }
+    },
+    getGraphData(state) {
+      return (fileIndex: number) => {
+        let currentNodes: node[] = []
+        state.alReadyAnnotationData[fileIndex].forEach((item) => {
+          currentNodes.push({
+            id: String(item.id),
+            label: item.text
+          })
+        })
+        let currentEdges: edge[] = []
+        state.alReadyAnnotationConnection[fileIndex].forEach((item) => {
+          currentEdges.push({
+            source: String(item.fromId),
+            target: String(item.toId),
+            label: item.type
+          })
+        })
+        return {
+          nodes: currentNodes,
+          edges: currentEdges
+        }
       }
     }
 

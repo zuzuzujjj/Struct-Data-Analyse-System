@@ -26,6 +26,7 @@ const props = defineProps({
         type:Array,
     }
 })
+
 //绘图实例
 let graph: any
 //调整窗口回调
@@ -48,6 +49,7 @@ const reDraw = () => {
 
 onMounted(() => {
     graph = useGraph(currentNode, props)
+    console.log('注册图对象');
     drawGraph(graph);
     if (typeof window !== 'undefined')
         window.addEventListener('resize', reDraw())
@@ -63,8 +65,7 @@ const drawGraph = (graph: Graph) => {
     graph.render(); // 渲染图
 }
 // 改变数据时调用渲染函数
-watch(props.data as any, () => {
-    console.log('改变data渲染', props.data);
+watch(()=>props.data as any, () => {    
     drawGraph(graph);
 })
 </script>

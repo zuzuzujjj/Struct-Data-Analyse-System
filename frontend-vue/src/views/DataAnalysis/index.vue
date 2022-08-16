@@ -27,7 +27,7 @@
     </div>
   </div>
   <!-- 内容展示区 -->
-  <main class="content-wapper">
+  <main class="content-wapper" ref="contentShowRef">
     <NotUpload v-if="!isUpoladFile"></NotUpload>
     <OnUpload v-if="isUpoladFile"></OnUpload>
   </main>
@@ -72,9 +72,11 @@ watch(fileContent, () => {
   store.addAlReadyAnnotationData([])
   store.addAlReadyAnnotationConnection([])
   isUpoladFile.value = true
+  //向下滚动
+  contentShowRef.value?.scrollIntoView()
 })
 
-
+let contentShowRef=ref<HTMLElement>()
 const isUpoladFile = ref<boolean>(false)  //是否搜索
 
 </script>
